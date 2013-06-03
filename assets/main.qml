@@ -4,7 +4,7 @@ import bb.cascades 1.0
 TabbedPane {
     showTabsOnActionBar: false
     Tab {
-        title: qsTr("Tab 1")
+        title: qsTr("Test Data Load")
         Page {
             id: tab1
             actions: [
@@ -12,36 +12,32 @@ TabbedPane {
                 ActionItem {
                     title: qsTr("Rotate")
                     onTriggered: {
-                        imgTab1.rotationZ = imgTab1.rotationZ + 90;
+                        //imgTab1.rotationZ = imgTab1.rotationZ + 90;
                     }
                 },
                 ActionItem {
                     title: qsTr("Break")
                     onTriggered: {
-                        imgTab1.imageSource = "asset:///images/picture1br.png";
+                        //imgTab1.imageSource = "asset:///images/picture1br.png";
                     }
                 }
             ]
             Container {
                 // define tab content here
                 Label {
-                    text: qsTr("Tab 1 title")
+                    text: qsTr("Test Data")
                     horizontalAlignment: HorizontalAlignment.Center
                     textStyle {
                         base: SystemDefaults.TextStyles.TitleText
                     }
                 }
-                ImageView {
-                    id: imgTab1
-                    imageSource: "asset:///images/picture1.png"
-                    layoutProperties: StackLayoutProperties {
-                        // make imageView to fill all available height
-                        spaceQuota: 1.0
-                    }
-                    verticalAlignment: VerticalAlignment.Center
+                Button {
+                    objectName: "getTestData"
+                    text: "Get Test Data"
+                    verticalAlignment: VerticalAlignment.Bottom
                     horizontalAlignment: HorizontalAlignment.Center
-                    scalingMethod: ScalingMethod.AspectFit
                 }
+
             }
         }
     }

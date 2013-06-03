@@ -9,6 +9,7 @@
 #define JSONMANAGER_HPP_
 
 #include <QObject>
+#include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
@@ -29,15 +30,20 @@ public:
 	virtual ~JsonManager();
 
 public slots:
-	void requestFinished(QNetworkReply*);
-	void networkError(QNetworkReply::NetworkError);
+	void GetTest();
 
 private:
+	QVariant validateReply(QNetworkReply* reply);
+
 	QNetworkAccessManager* serverAccess;
+
+private slots:
+	void testReply();
 
 signals:
 	void error(QNetworkReply::NetworkError);
 	void variantReplyMap(QVariant);
+	void testReplyMap(QVariant);
 
 };
 

@@ -6,6 +6,7 @@
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
+#include <bb/cascades/Button>
 
 using namespace bb::cascades;
 
@@ -21,5 +22,14 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     // set created root object as a scene
     app->setScene(root);
 
-    JsonManager json;
+    JsonManager * json = new JsonManager();
+
+    //Connect all the Query managers here
+
+    Button* getTestDataButton = root->findChild<Button*>("getTestData");
+    connect(getTestDataButton, SIGNAL(clicked()), json, SLOT(GetTest()));
 }
+
+
+
+

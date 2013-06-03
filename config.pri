@@ -3,36 +3,97 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 
 device {
     CONFIG(debug, debug|release) {
+        INCLUDEPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
+        DEPENDPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
         SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
 
     CONFIG(release, debug|release) {
+        INCLUDEPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
+        DEPENDPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
         SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
 }
 
 simulator {
     CONFIG(debug, debug|release) {
+        INCLUDEPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
+        DEPENDPATH +=  $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtNetwork") \
+                 $$quote("${QNX_TARGET}/../target-override/usr/include") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4/QtCore") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/qt4") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp/c") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
+                 $$quote("${QNX_TARGET}/../qnx6/usr/include")
+
         SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
 }
 
-INCLUDEPATH +=  $$quote($$BASEDIR/src)
+INCLUDEPATH +=  $$quote($$BASEDIR/src/StopInfo) \
+         $$quote($$BASEDIR/src)
 
 CONFIG += precompile_header
 

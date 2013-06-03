@@ -11,64 +11,52 @@ JsonManager::JsonManager()
 {
 	//Create network manager
 	serverAccess = new QNetworkAccessManager(this);
-	serverAccess->setNetworkAccessible(QNetworkAccessManager::Accessible);
+}
 
-	if(serverAccess->networkAccessible() != QNetworkAccessManager::Accessible)
-	{
-		qDebug() << "DEBUG Error: network is unaccessible";
-	}
-
-	//Possibly: check server is alive
-	//Emit signal when connected?
-
-	//Connect signals from QNetworkAccessManager to internal slots
-
-	QObject::connect(serverAccess, SIGNAL(finished(QNetworkReply*)), this, SLOT(requestFinished(QNetworkReply*)));
-
+void JsonManager::GetTest()
+{
 	QString URL = "http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_75403.json?key=TEST";
 	QNetworkRequest req;
 	req.setUrl(QUrl(URL));
 
-	QNetworkReply* initialReply = serverAccess->get(req);
+	QNetworkReply* myReply = serverAccess->get(req);
+	connect(myReply, SIGNAL(finished()), this, SLOT(testReply()));
+}
 
-	QObject::connect(initialReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(networkError(QNetworkReply::NetworkError)));
+void JsonManager::testReply()
+{
+	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+	QVariant myVar = validateReply(reply);
 
-	qDebug() << "DEBUG TestA";
+	if(myVar.isValid())
+		emit testReplyMap(myVar);
+}
+
+QVariant JsonManager::validateReply(QNetworkReply* reply)
+{
+	if(reply->error() != QNetworkReply::NoError)
+	{
+		qDebug() << "Critical network error";
+		emit error(reply->error());
+		reply->deleteLater();
+		return QVariant();
+	}
+
+	//No errors in reply, attempt to parse JSON
+	QByteArray netData = reply->readAll();
+	reply->deleteLater();
+
+	JsonDataAccess jda;
+	QVariant replyData = jda.loadFromBuffer(netData);
+
+	qDebug() << replyData;
+	qDebug(netData);
+
+	return replyData;
 }
 
 JsonManager::~JsonManager()
 {
 	//Cleanup network stuff
-}
-
-void JsonManager::requestFinished(QNetworkReply* reply)
-{
-	qDebug() << "DEBUG TestB";
-
-	if(reply->error() != QNetworkReply::NoError)
-	{
-		qDebug() << "DEBUG Critical error";
-		emit error(reply->error());
-		reply->deleteLater();
-		return;
-	}
-
-	//No errors in reply, attempt to parse JSON
-
-	//DEBUG ONLY
-
-	QByteArray netData = reply->readAll();
-
-	qDebug(netData);
-
-	JsonDataAccess jda;
-	QVariant replyData = jda.loadFromBuffer(netData);
-
-	emit variantReplyMap(replyData);
-	reply->deleteLater();
-}
-
-void JsonManager::networkError(QNetworkReply::NetworkError err)
-{
-	qDebug() << "DEBUG NETWORK ERROR";
+	delete serverAccess;
 }
