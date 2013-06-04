@@ -19,16 +19,19 @@ device {
                  $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
                  $$quote("${QNX_TARGET}/../qnx6/usr/include")
 
-        SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/AppSettings.cpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.cpp) \
+                 $$quote($$BASEDIR/src/JsonManager.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
-                 $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+        HEADERS +=  $$quote($$BASEDIR/src/AppSettings.hpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.hpp) \
+                 $$quote($$BASEDIR/src/DataTypes.hpp) \
+                 $$quote($$BASEDIR/src/JsonManager.hpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
-                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp)
     }
 
     CONFIG(release, debug|release) {
@@ -48,16 +51,19 @@ device {
                  $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
                  $$quote("${QNX_TARGET}/../qnx6/usr/include")
 
-        SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/AppSettings.cpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.cpp) \
+                 $$quote($$BASEDIR/src/JsonManager.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
-                 $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+        HEADERS +=  $$quote($$BASEDIR/src/AppSettings.hpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.hpp) \
+                 $$quote($$BASEDIR/src/DataTypes.hpp) \
+                 $$quote($$BASEDIR/src/JsonManager.hpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
-                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp)
     }
 }
 
@@ -79,16 +85,19 @@ simulator {
                  $$quote("${QNX_TARGET}/../qnx6/usr/include/cpp") \
                  $$quote("${QNX_TARGET}/../qnx6/usr/include")
 
-        SOURCES +=  $$quote($$BASEDIR/src/JsonManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/AppSettings.cpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.cpp) \
+                 $$quote($$BASEDIR/src/JsonManager.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.cpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoView.cpp) \
-                 $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/JsonManager.hpp) \
+        HEADERS +=  $$quote($$BASEDIR/src/AppSettings.hpp) \
+                 $$quote($$BASEDIR/src/ApplicationUI.hpp) \
+                 $$quote($$BASEDIR/src/DataTypes.hpp) \
+                 $$quote($$BASEDIR/src/JsonManager.hpp) \
                  $$quote($$BASEDIR/src/StopInfo/StopInfoModel.hpp) \
-                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp) \
-                 $$quote($$BASEDIR/src/applicationui.hpp)
+                 $$quote($$BASEDIR/src/StopInfo/StopInfoView.hpp)
     }
 }
 

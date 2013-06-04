@@ -26,16 +26,21 @@ class JsonManager : public QObject
 	Q_OBJECT
 
 public:
-	JsonManager();
+	JsonManager(QString api, QString root);
 	virtual ~JsonManager();
 
 public slots:
 	void GetTest();
+	void GetAllStops();
+	void GetAllAgencies();
 
 private:
 	QVariant validateReply(QNetworkReply* reply);
 
+	AppSettings* mySettings;
 	QNetworkAccessManager* serverAccess;
+	QString apiKey;
+	QString urlRoot;
 
 private slots:
 	void testReply();

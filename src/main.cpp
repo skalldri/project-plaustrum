@@ -1,5 +1,5 @@
 // Tabbed pane project template
-#include "applicationui.hpp"
+#include "ApplicationUI.hpp"
 
 #include <bb/cascades/Application>
 
