@@ -11,6 +11,17 @@
 struct TransitAgency_s
 {
 	QString id;
+	QString name;
+	QString disclaimer;
+	QString lang;
+	QString phone;
+	bool privateService;
+	QString timezone;
+	QString url;
+	double lat;
+	double lon;
+	double latSpan;
+	double lonSpan;
 
 } typedef TransitAgency;
 

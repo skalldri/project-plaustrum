@@ -2,11 +2,11 @@
 moc_*
 
 #Makefiles
-*Makefile*
+*Makefile.*
 
 #Compiled application files
 *.bar
-*/plaustrum
+*plaustrum
 
 #hidden build dirs
 .moc*
