@@ -3,7 +3,6 @@
 #define ApplicationUI_HPP_
 
 #include <QObject>
-#include "StopInfo/StopInfoView.hpp"
 #include "AppSettings.hpp"
 
 namespace bb { namespace cascades { class Application; }}

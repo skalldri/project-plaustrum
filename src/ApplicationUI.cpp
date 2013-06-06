@@ -1,13 +1,14 @@
 // Tabbed pane project template
 #include "ApplicationUI.hpp"
 #include "JsonManager.hpp"
-
+#include <src/Stops/StopsView.hpp>
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/Button>
 
+namespace bb { namespace cascades { class Application; }}
 using namespace bb::cascades;
 
 ApplicationUI::ApplicationUI(bb::cascades::Application *app)
@@ -25,8 +26,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     //Open a QSettings object with application settings
 
     appSettings = new AppSettings();
-
     JsonManager * json = new JsonManager(appSettings);
+    StopsView * myStopsView = new StopsView(root);
 
     //Connect all the Query managers here
     Button* getTestDataButton = root->findChild<Button*>("getTestData");
