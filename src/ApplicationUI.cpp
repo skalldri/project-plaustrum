@@ -24,22 +24,13 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
     //Open a QSettings object with application settings
 
-    appSettings = loadSettings();
+    appSettings = new AppSettings();
 
-    JsonManager * json = new JsonManager();
+    JsonManager * json = new JsonManager(appSettings);
 
     //Connect all the Query managers here
     Button* getTestDataButton = root->findChild<Button*>("getTestData");
     connect(getTestDataButton, SIGNAL(clicked()), json, SLOT(GetTest()));
-}
-
-AppSettings* ApplicationUI::loadSettings()
-{
-	QSettings* mySettings = new QSettings(SETTINGS_FILE, QSettings::IniFormat, this);
-
-	//Check for all app settings
-
-	return mySettings;
 }
 
 

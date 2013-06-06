@@ -10,25 +10,39 @@
 AppSettings::AppSettings()
 {
 	mySettings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
+	QFileInfo testFile(SETTINGS_FILE);
+	if(testFile.exists())
+	{
+		qDebug() << "Settings file found!";
+	}
+	else
+	{
+		qDebug() << "No Settings file at " << testFile.absoluteFilePath();
+	}
 
 	//Verify all app settings: if setting is present, assign it to it's variable.
 	//If not present, create it in the ini file.
 
-	if(mySettings->contains("apiUrlList"))
+	if(!mySettings->contains("apiUrlList"))
 	{
 		mySettings->setValue("apiUrlList", QStringList());
+		qDebug() << "No value found for apiUrlList";
 		//TODO: emit error when corrupted settings file is detected, in all the IF statements here
 	}
-	apiUrlList = mySettings->value("apiUrlBase");
+	apiUrlList = mySettings->value("apiUrlList", QStringList()).toStringList();
+	qDebug() << "API URL List: " << apiUrlList;
 
-	if(mySettings->contains("apiUrlBase"))
+	if(!mySettings->contains("apiUrlBase"))
 	{
 		mySettings->setValue("apiUrlBase", QString());
+		qDebug() << "No value found for apiUrlBase";
 	}
-	apiUrlBase = mySettings->value("apiUrlBase");
+	apiUrlBase = mySettings->value("apiUrlBase", "").toString();
+	qDebug() << "API URL Base: " << apiUrlBase;
 }
 
-AppSettings::~AppSettings() {
+AppSettings::~AppSettings()
+{
 	delete mySettings;
 }
 
@@ -52,7 +66,7 @@ QString AppSettings::GetAPIURlBase()
 
 bool AppSettings::UserChoosesURL()
 {
-	if(apiUrlBase == "USER" || apiUrlBase.isEmpty())
+	if(apiUrlBase == "USER" || apiUrlBase.isEmpty() || apiUrlBase == "")
 	{
 		return true;
 	}
@@ -79,4 +93,9 @@ bool AppSettings::ChangeBaseURL(QString url)
 	}
 
 	return false;
+}
+
+void AppSettings::EnableDebugMode()
+{
+	debugMode = true;
 }

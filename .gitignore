@@ -3,6 +3,7 @@ moc_*
 
 #Compiled application files
 *.bar
+*/plaustrum
 
 #hidden build dirs
 .moc*

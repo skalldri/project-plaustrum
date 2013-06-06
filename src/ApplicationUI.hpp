@@ -22,8 +22,6 @@ public:
 
 private:
     AppSettings * appSettings;
-    QSettings * loadSettings();
-
 
 };
 

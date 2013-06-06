@@ -10,25 +10,27 @@
 
 #ifndef APPSETTINGS_HPP_
 #define APPSETTINGS_HPP_
+#include <QtCore>
 
 //TODO: get a real API key here
-#define SETTINGS_FILE "assets/appSettings.ini"
+#define SETTINGS_FILE "./app/native/assets/appSettings.ini"
 #define API_KEY "TEST"
 
 class AppSettings {
 public:
-	AppSettings();
+				AppSettings();
 	virtual 	~AppSettings();
 	QString 	GetAPIKey();
 	QString 	GetAPIURlBase();
 	bool		UserChoosesURL();
 	bool 		ChangeBaseURL(QString url);
+	void		EnableDebugMode();
 
 private:
-	QSettings * mySettings;
-	QStringList apiUrlList;
-	QString apiUrlBase;
-	bool debugMode;
+	QSettings *  mySettings;
+	QStringList  apiUrlList;
+	QString		 apiUrlBase;
+	bool 		 debugMode;
 };
 
 #endif /* APPSETTINGS_HPP_ */

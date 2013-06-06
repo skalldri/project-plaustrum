@@ -8,6 +8,7 @@
 #ifndef JSONMANAGER_HPP_
 #define JSONMANAGER_HPP_
 
+#include "AppSettings.hpp"
 #include <QObject>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
@@ -26,7 +27,7 @@ class JsonManager : public QObject
 	Q_OBJECT
 
 public:
-	JsonManager(QString api, QString root);
+	JsonManager(AppSettings* appSettings);
 	virtual ~JsonManager();
 
 public slots:
@@ -39,8 +40,6 @@ private:
 
 	AppSettings* mySettings;
 	QNetworkAccessManager* serverAccess;
-	QString apiKey;
-	QString urlRoot;
 
 private slots:
 	void testReply();

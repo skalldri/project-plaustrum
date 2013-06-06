@@ -7,13 +7,16 @@
 
 #include "JsonManager.hpp"
 
-JsonManager::JsonManager(QString api, QString root, AppSettings* s)
+JsonManager::JsonManager(AppSettings* myApp)
 {
 	//Create network manager
 	serverAccess = new QNetworkAccessManager(this);
-	apiKey = api;
-	urlRoot = root;
-	mySettings = s;
+	mySettings = myApp;
+}
+
+void JsonManager::GetAllAgencies()
+{
+	QString URL = mySettings->GetAPIURlBase() + "agencies-with-coverage.json?key=TEST";
 }
 
 void JsonManager::GetAllStops()
@@ -24,6 +27,9 @@ void JsonManager::GetAllStops()
 void JsonManager::GetTest()
 {
 	QString URL = mySettings->GetAPIURlBase() + "arrivals-and-departures-for-stop/1_75403.json?key=TEST";
+
+	qDebug() << URL;
+
 	QNetworkRequest req;
 	req.setUrl(QUrl(URL));
 
