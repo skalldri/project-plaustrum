@@ -31,7 +31,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
     //Connect all the Query managers here
     Button* getTestDataButton = root->findChild<Button*>("getTestData");
-    connect(getTestDataButton, SIGNAL(clicked()), json, SLOT(GetTest()));
+    connect(getTestDataButton, SIGNAL(clicked()), json, SLOT(GetAllAgencies()));
 }
 
 
