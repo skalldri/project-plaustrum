@@ -1,6 +1,9 @@
 #Build moc files
 moc_*
 
+#Makefiles
+*Makefile*
+
 #Compiled application files
 *.bar
 */plaustrum
