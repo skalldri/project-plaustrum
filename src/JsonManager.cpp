@@ -14,16 +14,18 @@ JsonManager::JsonManager(AppSettings* myApp)
 	mySettings = myApp;
 }
 
-void JsonManager::getUrl(QString function, QString specifier)
+void JsonManager::getUrl(QString function, QString specifier, QString parameters)
 {
 	QString option = "";
 
-	if(specifier == "" || specifier.isEmpty())
+	if(specifier != "" && !specifier.isEmpty())
 	{
 		option = "/" + specifier;
 	}
 
-	QString URL = mySettings->GetAPIURlBase() + function + option + "." + DATA_TYPE + KEY_URL + mySettings->GetAPIKey();
+	QString URL = mySettings->GetAPIURlBase() + function + option + "." + DATA_TYPE + KEY_URL + mySettings->GetAPIKey() + parameters;
+
+	qDebug() << URL;
 
 	QNetworkRequest req;
 	req.setUrl(QUrl(URL));
@@ -39,17 +41,7 @@ void JsonManager::GetAllAgencies()
 
 void JsonManager::processAllAgenciesReply(QVariant input)
 {
-}
-
-void JsonManager::GetAllStops(QString agencyId)
-{
-	//TODO: Check agencyID is valid (we've seen it before)
-	getUrl(ALL_STOPS, agencyId);
-}
-
-void JsonManager::processAllStopsReply(QVariant input)
-{
-	QList<TransitAgency>* outputList = new QList<TransitAgency>();
+	QList<TransitAgency> outputList;
 
 	if(input.toMap()["code"].toInt() != 200)
 	{
@@ -76,8 +68,70 @@ void JsonManager::processAllStopsReply(QVariant input)
 		localAgency.latSpan = item.toMap()["latSpan"].toDouble();
 		localAgency.lonSpan = item.toMap()["lonSpan"].toDouble();
 
-		outputList->append(localAgency);
+		qDebug() << "Found agency " << localAgency.name << " with ID " << localAgency.id;
+
+		outputList.append(localAgency);
 	}
+
+	emit AllAgenciesReply(outputList);
+}
+
+void JsonManager::GetStopByCode(QString stopCode)
+{
+	//TODO: error checking of input
+	//TODO: real lat and lon? take from the device GPS
+
+	getUrl(STOP_SEARCH, "", "&lat=0&lon=0&query=" + stopCode);
+}
+
+void JsonManager::GetStopByLocation(double lat, double lon, double radius)
+{
+
+}
+
+void JsonManager::processStopSearchReply(QVariant input)
+{
+	QList<Stop> outputList;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "Stop Search Reply Status Code " << input.toMap()["data"].toInt();
+		return;
+	}
+
+	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
+	{
+		QVariantMap stopMap = item.toMap();
+
+		Stop localStop;
+		localStop.id = stopMap["id"].toString();
+		localStop.code = stopMap["code"].toString();
+		localStop.name = stopMap["name"].toString();
+		localStop.lat = stopMap["lat"].toDouble();
+		localStop.lon = stopMap["lon"].toDouble();
+		localStop.locationType = stopMap["locationType"].toString();
+		localStop.direction = stopMap["direction"].toString();
+		localStop.wheelchairBoarding = stopMap["wheelchairBoarding"].toString();
+
+		//TODO: add route info to the localStop objects
+
+		qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;
+
+		outputList.append(localStop);
+	}
+
+	emit StopSearchReply(outputList);
+}
+
+void JsonManager::GetAllStops(QString agencyId)
+{
+	//TODO: Check agencyID is valid (we've seen it before)
+	getUrl(ALL_STOPS, agencyId);
+}
+
+void JsonManager::processAllStopsReply(QVariant input)
+{
+
 }
 
 void JsonManager::networkReply()
@@ -97,6 +151,11 @@ void JsonManager::networkReply()
 		if(requestUrl.contains(ALL_STOPS))
 		{
 			processAllStopsReply(myVar);
+		}
+
+		if(requestUrl.contains(STOP_SEARCH))
+		{
+			processStopSearchReply(myVar);
 		}
 	}
 }

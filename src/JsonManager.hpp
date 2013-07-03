@@ -22,9 +22,10 @@
 
 #define DATA_TYPE "json"
 #define KEY_URL "?key="
+
 #define ALL_AGENCIES "agencies-with-coverage"
 #define ALL_STOPS "stop-ids-for-agency"
-
+#define STOP_SEARCH "stops-for-location"
 
 using namespace bb::data;
 
@@ -39,12 +40,17 @@ public:
 public slots:
 	void GetAllStops(QString agencyID);
 	void GetAllAgencies();
+	void GetStopByCode(QString stopCode);
+	void GetStopByLocation(double lat, double lon, double radius = -1.0);
 
 private:
 	QVariant validateReply(QNetworkReply* reply);
+
 	void processAllAgenciesReply(QVariant input);
 	void processAllStopsReply(QVariant input);
-	void getUrl(QString function, QString specifier = "");
+	void processStopSearchReply(QVariant input);
+
+	void getUrl(QString function, QString specifier = "", QString parameters = "");
 
 	AppSettings* mySettings;
 	QNetworkAccessManager* serverAccess;
@@ -56,7 +62,8 @@ signals:
 	void error(QNetworkReply::NetworkError);
 	void variantReplyMap(QVariant);
 	void testReplyMap(QVariant);
-	void AllAgenciesReply(QList<TransitAgency>*);
+	void AllAgenciesReply(QList<TransitAgency>);
+	void StopSearchReply(QList<Stop>);
 
 };
 

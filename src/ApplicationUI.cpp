@@ -1,6 +1,5 @@
 // Tabbed pane project template
 #include "ApplicationUI.hpp"
-#include "JsonManager.hpp"
 #include <src/Stops/StopsView.hpp>
 
 #include <bb/cascades/Application>
@@ -26,12 +25,21 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     //Open a QSettings object with application settings
 
     appSettings = new AppSettings();
-    JsonManager * json = new JsonManager(appSettings);
+    json = new JsonManager(appSettings);
     StopsView * myStopsView = new StopsView(root);
 
     //Connect all the Query managers here
     Button* getTestDataButton = root->findChild<Button*>("getTestData");
-    connect(getTestDataButton, SIGNAL(clicked()), json, SLOT(GetAllAgencies()));
+    connect(getTestDataButton, SIGNAL(clicked()), this, SLOT(getStops()));
 }
+
+void ApplicationUI::getStops()
+{
+	json->GetAllStops("3");
+	json->GetStopByCode("501");
+	json->GetAllAgencies();
+}
+
+
 
 
