@@ -5,8 +5,6 @@
  *      Author: nause
  */
 
-#warning I AM HERE
-
 #ifndef STOPSVIEW_HPP_
 #define STOPSVIEW_HPP_
 
