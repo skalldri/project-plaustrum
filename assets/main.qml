@@ -3,6 +3,69 @@ import bb.cascades 1.0
 
 TabbedPane {
     showTabsOnActionBar: false
+    
+    onCreationCompleted: {
+        // this slot is called when declarative scene is created
+        // write post creation initialization here
+        console.log("TabbedPane - onCreationCompleted()")
+        
+        // enable layout to adapt to the device rotation
+        // don't forget to enable screen rotation in bar-bescriptor.xml (Application->Orientation->Auto-orient)
+        OrientationSupport.supportedDisplayOrientation = SupportedDisplayOrientation.All;
+    }
+    Tab {
+        title: qsTr("Stops")
+        NavigationPane {
+            id: navStops
+            Page {
+                Container {
+                    Header {
+                        title: "Search"
+                    }
+                    
+                    Container {
+                        TextField {
+                            id: textStopId
+                        }
+                        Button {
+                            text: "Image"
+                            onClicked: {
+                                var page = stopsListDefinition.createObject();
+                                navStops.push(page);
+                            }
+                        }
+                    }
+                    Header {
+                        title: "Favorites"
+                    }
+                    ListView {
+                        objectName: "favoriteStopsListView"
+                        dataModel: ArrayDataModel {
+                            objectName: "favoriteStopsListModel"
+                        }
+                    }
+                }
+                actions: [
+                    ActionItem {
+                        title: "Delete"
+                        ActionBar.placement: ActionBarPlacement.OnBar
+                        onTriggered: {
+                            var page = stopsListDefinition.createObject();
+                            navStops.push(page);
+                        }
+                        
+                        attachedObjects: ComponentDefinition {
+                            id: stopsListDefinition
+                            source: "stopsList.qml"
+                        }
+                    }
+                ]
+            }
+            onPopTransitionEnded: {
+                page.destroy();
+            }
+        }
+    }
     Tab {
         title: qsTr("Test Data Load")
         Page {
@@ -37,22 +100,6 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Bottom
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-
-            }
-        }
-    }
-    Tab {
-        title: qsTr("Stops")
-        content: Page {
-            Container {
-                layout: DockLayout {
-                }
-                ListView {
-                    objectName: "stopsListView"
-                    dataModel: ArrayDataModel {
-                        objectName: "stopsListModel"
-                    }
-                }
             }
         }
     }
@@ -70,14 +117,16 @@ TabbedPane {
                     }
                 }
                 Container {
-                    layout: DockLayout { }
+                    layout: DockLayout {
+                    
+                    }
                     layoutProperties: StackLayoutProperties {
                         spaceQuota: 1.0
                     }
                     verticalAlignment: VerticalAlignment.Fill
                     horizontalAlignment: HorizontalAlignment.Fill
                     Label {
-                        text: qsTr ("Tab 3 content")
+                        text: qsTr("Tab 3 content")
                         verticalAlignment: VerticalAlignment.Center
                         horizontalAlignment: HorizontalAlignment.Center
                         textStyle {
@@ -87,14 +136,5 @@ TabbedPane {
                 }
             }
         }
-    }
-    onCreationCompleted: {
-        // this slot is called when declarative scene is created
-        // write post creation initialization here
-        console.log("TabbedPane - onCreationCompleted()")
-
-        // enable layout to adapt to the device rotation
-        // don't forget to enable screen rotation in bar-bescriptor.xml (Application->Orientation->Auto-orient)
-        OrientationSupport.supportedDisplayOrientation = SupportedDisplayOrientation.All;
     }
 }

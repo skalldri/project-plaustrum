@@ -10,9 +10,8 @@
 using namespace bb::cascades;
 
 StopsView::StopsView(AbstractPane * parent) {
-	stopsListView = parent->findChild<ListView*>("stopsListView");
-	stopsListModel = parent->findChild<ArrayDataModel*>("stopsListModel");
-
+	stopsListView = parent->findChild<ListView*>("favoriteStopsListView");
+	stopsListModel = parent->findChild<ArrayDataModel*>("favoriteStopsListModel");
 	PopulateStopsListView();
 }
 
