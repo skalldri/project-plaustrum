@@ -37,6 +37,8 @@ void ApplicationUI::getStops()
 {
 	json->GetAllStops("3");
 	json->GetStopByCode("501");
+	json->GetStopByRadius(47.653435, -122.305641);
+	//json->GetStopByBoundedBox(47.653435, -122.305641, )
 	json->GetAllAgencies();
 }
 

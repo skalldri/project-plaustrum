@@ -84,9 +84,27 @@ void JsonManager::GetStopByCode(QString stopCode)
 	getUrl(STOP_SEARCH, "", "&lat=0&lon=0&query=" + stopCode);
 }
 
-void JsonManager::GetStopByLocation(double lat, double lon, double radius)
+void JsonManager::GetStopByRadius(double lat, double lon, double radius)
 {
+	//TODO: error checking of input
+	QString request = "&lat=" + QString().number(lat) + "&lon=" + QString().number(lon);
 
+	if(radius > 0)
+	{
+		request += "&radius=" + QString().number(radius);
+	}
+
+	getUrl(STOP_SEARCH, "", request);
+}
+
+void JsonManager::GetStopByBoundedBox(double lat, double lon, double latSpan, double lonSpan)
+{
+	//TODO: error checking of input
+
+	QString request = "&lat=" + QString().number(lat) + "&lon=" + QString().number(lon) +
+			"&latSpan=" + QString().number(latSpan) + "&lonSpan=" + QString().number(lonSpan);
+
+	getUrl(STOP_SEARCH, "", request);
 }
 
 void JsonManager::processStopSearchReply(QVariant input)

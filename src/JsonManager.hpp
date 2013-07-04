@@ -41,7 +41,8 @@ public slots:
 	void GetAllStops(QString agencyID);
 	void GetAllAgencies();
 	void GetStopByCode(QString stopCode);
-	void GetStopByLocation(double lat, double lon, double radius = -1.0);
+	void GetStopByRadius(double lat, double lon, double radius = -1.0);
+	void GetStopByBoundedBox(double lat, double lon, double latSpan, double lonSpan);
 
 private:
 	QVariant validateReply(QNetworkReply* reply);
