@@ -9,17 +9,22 @@
 
 using namespace bb::cascades;
 
-StopsView::StopsView(AbstractPane * parent) {
-	stopsListView = parent->findChild<ListView*>("favoriteStopsListView");
-	stopsListModel = parent->findChild<ArrayDataModel*>("favoriteStopsListModel");
-	PopulateStopsListView();
+StopsView::StopsView(AbstractPane * parent)
+{
+	favoritesListView = parent->findChild<ListView*>("favoriteStopsListView");
+	favoritesListModel = parent->findChild<ArrayDataModel*>("favoriteStopsListModel");
+
+	stopsListView = parent->findChild<ListView*>("stopsListView");
+	stopsListModel = parent->findChild<ArrayDataModel*>("stopsListModel");
+
+	PopulateFavorites();
 }
 
 StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopsView::PopulateStopsListView()
+void StopsView::PopulateFavorites()
 {
 	//Accept a list of stops as an argument
 
@@ -28,6 +33,18 @@ void StopsView::PopulateStopsListView()
 
 	for(int i = 0; i < 20; i++)
 	{
-		stopsListModel->append(QVariant("Stop" + QString().number(i)));
+		favoritesListModel->append(QVariant("Stop " + QString().number(i)));
+	}
+}
+
+void StopsView::PopulateResults(QList<Stop> inputList)
+{
+	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
+	stopsListModel->clear();
+
+	foreach(Stop current, inputList)
+	{
+		qDebug() << "Adding element " << current.name;
+		stopsListModel->append(QVariant(current.name + " (" + current.code + ")"));
 	}
 }

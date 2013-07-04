@@ -14,6 +14,7 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/ListView>
 #include <bb/cascades/ArrayDataModel>
+#include "../DataTypes.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -25,11 +26,17 @@ class StopsView : public QObject
 public:
 	StopsView(AbstractPane * parent);
 	virtual ~StopsView();
-	void PopulateStopsListView();
+	void PopulateFavorites();
+
+public slots:
+	void PopulateResults(QList<Stop> inputList);
 
 private:
 	ListView * stopsListView;
 	ArrayDataModel * stopsListModel;
+	ListView * favoritesListView;
+	ArrayDataModel * favoritesListModel;
+	AbstractPane * stopList;
 };
 
 #endif /* STOPSVIEW_HPP_ */

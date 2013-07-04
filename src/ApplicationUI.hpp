@@ -3,8 +3,14 @@
 #define ApplicationUI_HPP_
 
 #include <QObject>
+#include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/Button>
+#include "src/Stops/StopsView.hpp"
 #include "AppSettings.hpp"
 #include "JsonManager.hpp"
+#include "DataTypes.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -26,6 +32,7 @@ public slots:
 private:
     AppSettings * appSettings;
     JsonManager * json;
+    AbstractPane * root;
 
 };
 

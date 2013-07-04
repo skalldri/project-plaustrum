@@ -19,19 +19,23 @@ TabbedPane {
             id: navStops
             Page {
                 Container {
+                    
                     Header {
                         title: "Search"
                     }
-                    
                     Container {
+                        layout: StackLayout {
+                            orientation: LayoutOrientation.LeftToRight
+
+                        }
                         TextField {
                             id: textStopId
+                            textStyle.textAlign: TextAlign.Default
                         }
                         Button {
                             text: "Image"
                             onClicked: {
-                                var page = stopsListDefinition.createObject();
-                                navStops.push(page);
+                                navStops.push(stopsListPage);
                             }
                         }
                     }
@@ -45,13 +49,13 @@ TabbedPane {
                         }
                     }
                 }
+                                
                 actions: [
                     ActionItem {
                         title: "Delete"
                         ActionBar.placement: ActionBarPlacement.OnBar
                         onTriggered: {
-                            var page = stopsListDefinition.createObject();
-                            navStops.push(page);
+                            navStops.push(stopsListPage);
                         }
                         
                         attachedObjects: ComponentDefinition {
@@ -62,8 +66,34 @@ TabbedPane {
                 ]
             }
             onPopTransitionEnded: {
-                page.destroy();
+                //page.destroy();
             }
+
+            attachedObjects: [
+                Page {
+                    id: stopsListPage
+                    Container {
+                        Header {
+                            title: "Search Results"
+                        }
+                        ListView {
+                            objectName: "stopsListView"
+                            dataModel: ArrayDataModel {
+                                objectName: "stopsListModel"
+                            }
+                        }
+                    }
+
+                    paneProperties: NavigationPaneProperties {
+                        backButton: ActionItem {
+                            title: "Back"
+                            onTriggered: {
+                                navStops.pop();
+                            }
+                        }
+                    }
+                }
+            ]
         }
     }
     Tab {

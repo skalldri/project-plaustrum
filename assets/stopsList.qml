@@ -2,8 +2,8 @@ import bb.cascades 1.0
 
 Page {
     Container {
-        layout: DockLayout {
-        
+        Header {
+            title: "Search Results"
         }
         ListView {
             objectName: "stopsListView"
@@ -12,6 +12,7 @@ Page {
             }
         }
     }
+    
     paneProperties: NavigationPaneProperties {
         backButton: ActionItem {
             title: "Back"
