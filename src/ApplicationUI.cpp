@@ -19,9 +19,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     //Open a QSettings object with application settings
     appSettings = new AppSettings();
     json = new JsonManager(appSettings);
-    StopsView * myStopsView = new StopsView(root);
-
-    connect(json, SIGNAL(StopSearchReply(QList<Stop>)), myStopsView, SLOT(PopulateResults(QList<Stop>)));
+    StopsView * myStopsView = new StopsView(json, root);
 
     //Connect all the Query managers here
     Button* getTestDataButton = root->findChild<Button*>("getTestData");
@@ -30,11 +28,11 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
 void ApplicationUI::getStops()
 {
-	json->GetAllStops("3");
+	//json->GetAllStops("3");
 	json->GetStopByCode("501");
-	json->GetStopByRadius(47.653435, -122.305641);
+	//json->GetStopByRadius(47.653435, -122.305641);
 	//json->GetStopByBoundedBox(47.653435, -122.305641, )
-	json->GetAllAgencies();
+	//json->GetAllAgencies();
 }
 
 

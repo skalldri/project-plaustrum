@@ -18,8 +18,7 @@ TabbedPane {
         NavigationPane {
             id: navStops
             Page {
-                Container {
-                    
+                Container {  
                     Header {
                         title: "Search"
                     }
@@ -29,10 +28,11 @@ TabbedPane {
 
                         }
                         TextField {
-                            id: textStopId
+                            objectName: "textStopCode"
                             textStyle.textAlign: TextAlign.Default
                         }
                         Button {
+                            objectName: "getStopCode"
                             text: "Image"
                             onClicked: {
                                 navStops.push(stopsListPage);
@@ -48,8 +48,7 @@ TabbedPane {
                             objectName: "favoriteStopsListModel"
                         }
                     }
-                }
-                                
+                }       
                 actions: [
                     ActionItem {
                         title: "Delete"
@@ -81,6 +80,23 @@ TabbedPane {
                             dataModel: ArrayDataModel {
                                 objectName: "stopsListModel"
                             }
+                            listItemComponents: [
+                                ListItemComponent {
+                                    type: "stop"
+                                    Container {
+                                        Label {
+                                        	objectName: "stopNumber"
+                                            textStyle.textAlign: TextAlign.Center
+                                            textStyle.fontWeight: FontWeight.Bold
+                                        }
+                                        Label {
+                                        	objectName: "stopName"
+                                        }
+
+                                    }
+
+                                }
+                            ]
                         }
                     }
 

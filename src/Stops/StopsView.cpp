@@ -9,13 +9,18 @@
 
 using namespace bb::cascades;
 
-StopsView::StopsView(AbstractPane * parent)
+StopsView::StopsView(JsonManager * json, AbstractPane * parent)
 {
-	favoritesListView = parent->findChild<ListView*>("favoriteStopsListView");
-	favoritesListModel = parent->findChild<ArrayDataModel*>("favoriteStopsListModel");
+	//Set private json
+	this->json = json;
+	this->root = parent;
+	//Initialize button and connect signal to slot
+	//Connect all the Query managers here
+	Button* getStopCode = parent->findChild<Button*>("getStopCode");
+	connect(getStopCode, SIGNAL(clicked()), this, SLOT(getStops()));
 
-	stopsListView = parent->findChild<ListView*>("stopsListView");
-	stopsListModel = parent->findChild<ArrayDataModel*>("stopsListModel");
+	//Connect StopSearchReply to PopulateResults
+	connect(json, SIGNAL(StopSearchReply(QList<Stop>)), this, SLOT(PopulateResults(QList<Stop>)));
 
 	PopulateFavorites();
 }
@@ -24,8 +29,24 @@ StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
+void StopsView::getStops()
+{
+	//Clear old results
+	ArrayDataModel * stopsListModel = root->findChild<ArrayDataModel*>("stopsListModel");
+	stopsListModel->clear();
+
+	//Get text from TextField
+	TextField * textStopCode = root->findChild<TextField*>("textStopCode");
+	QString stopCode = textStopCode->text();
+
+	//Use json.
+	json->GetStopByCode(stopCode);
+}
+
 void StopsView::PopulateFavorites()
 {
+	ListView * favoritesListView = root->findChild<ListView*>("favoriteStopsListView");
+	ArrayDataModel * favoritesListModel = root->findChild<ArrayDataModel*>("favoriteStopsListModel");
 	//Accept a list of stops as an argument
 
 	//foreach entry in stops list
@@ -39,8 +60,11 @@ void StopsView::PopulateFavorites()
 
 void StopsView::PopulateResults(QList<Stop> inputList)
 {
-	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
+	ListView * stopsListView = root->findChild<ListView*>("stopsListView");
+	ArrayDataModel * stopsListModel = root->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
+
+	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
 
 	foreach(Stop current, inputList)
 	{

@@ -25,13 +25,13 @@ class ApplicationUI : public QObject
 public:
     ApplicationUI(bb::cascades::Application *app);
     virtual ~ApplicationUI() {}
+    JsonManager * json;
 
 public slots:
 	void getStops();
 
 private:
     AppSettings * appSettings;
-    JsonManager * json;
     AbstractPane * root;
 
 };

@@ -14,7 +14,10 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/ListView>
 #include <bb/cascades/ArrayDataModel>
+#include <bb/cascades/Button>
+#include <bb/cascades/TextField>
 #include "../DataTypes.hpp"
+#include "../JsonManager.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -24,19 +27,17 @@ class StopsView : public QObject
 {
 	Q_OBJECT
 public:
-	StopsView(AbstractPane * parent);
+	StopsView(JsonManager * json, AbstractPane * parent);
 	virtual ~StopsView();
 	void PopulateFavorites();
 
 public slots:
+	void getStops();
 	void PopulateResults(QList<Stop> inputList);
 
 private:
-	ListView * stopsListView;
-	ArrayDataModel * stopsListModel;
-	ListView * favoritesListView;
-	ArrayDataModel * favoritesListModel;
-	AbstractPane * stopList;
+	JsonManager * json;
+	AbstractPane * root;
 };
 
 #endif /* STOPSVIEW_HPP_ */
