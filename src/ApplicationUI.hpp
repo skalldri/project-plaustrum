@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include "AppSettings.hpp"
+#include "JsonManager.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -19,8 +20,12 @@ public:
     ApplicationUI(bb::cascades::Application *app);
     virtual ~ApplicationUI() {}
 
+public slots:
+	void getStops();
+
 private:
     AppSettings * appSettings;
+    JsonManager * json;
 
 };
 

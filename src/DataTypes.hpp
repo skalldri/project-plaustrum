@@ -25,5 +25,26 @@ struct TransitAgency_s
 
 } typedef TransitAgency;
 
+struct Stop_s
+{
+	QString id;
+	double lat;
+	double lon;
+	QString direction;
+	QString name;
+	QString code;
+	QString locationType;
+	QString wheelchairBoarding;
+	//TODO: Add route info here
+
+} typedef Stop;
+
+
+struct Route_s
+{
+	//TODO: fill in the Route Struct
+
+} typedef Route;
+
 
 #endif /* DATATYPES_HPP_ */
