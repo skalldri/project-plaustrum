@@ -45,7 +45,7 @@ void JsonManager::processAllAgenciesReply(QVariant input)
 
 	if(input.toMap()["code"].toInt() != 200)
 	{
-		qWarning() << "All-Agencies Reply Status Code " << input.toMap()["data"].toInt();
+		qWarning() << "All-Agencies Reply Status Code " << input.toMap()["code"].toInt();
 		return;
 	}
 
@@ -107,38 +107,35 @@ void JsonManager::GetStopByBoundedBox(double lat, double lon, double latSpan, do
 	getUrl(STOP_SEARCH, "", request);
 }
 
-void JsonManager::processStopSearchReply(QVariant input)
+void JsonManager::GetRouteByCode(QString routeCode)
 {
-	QList<Stop> outputList;
+	//TODO: error checking of input
+	//TODO: real lat and lon? take from the device GPS
 
-	if(input.toMap()["code"].toInt() != 200)
+	getUrl(ROUTE_SEARCH, "", "&lat=0&lon=0&query=" + routeCode);
+}
+
+void JsonManager::GetRouteByRadius(double lat, double lon, double radius)
+{
+	//TODO: error checking of input
+	QString request = "&lat=" + QString().number(lat) + "&lon=" + QString().number(lon);
+
+	if(radius > 0)
 	{
-		qWarning() << "Stop Search Reply Status Code " << input.toMap()["data"].toInt();
-		return;
+		request += "&radius=" + QString().number(radius);
 	}
 
-	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
-	{
-		QVariantMap stopMap = item.toMap();
+	getUrl(ROUTE_SEARCH, "", request);
+}
 
-		Stop localStop;
-		localStop.id = stopMap["id"].toString();
-		localStop.code = stopMap["code"].toString();
-		localStop.name = stopMap["name"].toString();
-		localStop.lat = stopMap["lat"].toDouble();
-		localStop.lon = stopMap["lon"].toDouble();
-		localStop.locationType = stopMap["locationType"].toString();
-		localStop.direction = stopMap["direction"].toString();
-		localStop.wheelchairBoarding = stopMap["wheelchairBoarding"].toString();
+void JsonManager::GetRouteByBoundedBox(double lat, double lon, double latSpan, double lonSpan)
+{
+	//TODO: error checking of input
 
-		//TODO: add route info to the localStop objects
+	QString request = "&lat=" + QString().number(lat) + "&lon=" + QString().number(lon) +
+			"&latSpan=" + QString().number(latSpan) + "&lonSpan=" + QString().number(lonSpan);
 
-		qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;
-
-		outputList.append(localStop);
-	}
-
-	emit StopSearchReply(outputList);
+	getUrl(ROUTE_SEARCH, "", request);
 }
 
 void JsonManager::GetAllStops(QString agencyId)
@@ -147,9 +144,112 @@ void JsonManager::GetAllStops(QString agencyId)
 	getUrl(ALL_STOPS, agencyId);
 }
 
+void JsonManager::GetStopsForRoute(QString routeId)
+{
+	//TODO: Check routeID is valid (we've seen it before)
+	getUrl(STOPS_FOR_ROUTE, routeId);
+}
+
+void JsonManager::processStopsForRouteReply(QVariant input)
+{
+	QList<Stop> outputList;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "Stops for Route Reply Status Code " << input.toMap()["code"].toInt();
+		return;
+	}
+
+	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
+	{
+		QVariantMap stopMap = item.toMap();
+		outputList.append(parseStop(stopMap));
+	}
+
+	emit StopsForRouteReply(outputList, input.toMap()["data"].toMap()["entry"].toMap()["routeId"].toString());
+}
+
+void JsonManager::processStopSearchReply(QVariant input)
+{
+	QList<Stop> outputList;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "Stop Search Reply Status Code " << input.toMap()["code"].toInt();
+		return;
+	}
+
+	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
+	{
+		QVariantMap stopMap = item.toMap();
+		outputList.append(parseStop(stopMap));
+	}
+
+	emit StopSearchReply(outputList);
+}
+
+void JsonManager::processRouteSearchReply(QVariant input)
+{
+	QList<Route> outputList;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "Stop Search Reply Status Code " << input.toMap()["code"].toInt();
+		return;
+	}
+
+	foreach(QVariant item, input.toMap()["data"].toMap()["routes"].toList())
+	{
+		outputList.append(parseRoute(item.toMap()));
+	}
+
+	emit RouteSearchReply(outputList);
+}
+
+Stop JsonManager::parseStop(QVariantMap stopMap)
+{
+	Stop localStop;
+	localStop.id = stopMap["id"].toString();
+	localStop.code = stopMap["code"].toString();
+	localStop.name = stopMap["name"].toString();
+	localStop.lat = stopMap["lat"].toDouble();
+	localStop.lon = stopMap["lon"].toDouble();
+	localStop.locationType = stopMap["locationType"].toString();
+	localStop.direction = stopMap["direction"].toString();
+	localStop.wheelchairBoarding = stopMap["wheelchairBoarding"].toString();
+
+	qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;
+
+	foreach(QVariant routeEntry, stopMap["routes"].toList())
+	{
+		localStop.routeInfo.append(parseRoute(routeEntry.toMap()));
+	}
+
+	return localStop;
+}
+
+Route JsonManager::parseRoute(QVariantMap routeEntry)
+{
+	Route localRoute;
+
+	localRoute.id = routeEntry["id"].toString();
+	localRoute.description = routeEntry["description"].toString();
+
+	if(localRoute.description == "" || localRoute.description.isEmpty())
+	{
+		localRoute.description = routeEntry["longName"].toString();
+	}
+
+	localRoute.shortName = routeEntry["shortName"].toString();
+
+	qDebug() << "\tRoute Found: " << localRoute.description;
+
+	return localRoute;
+}
+
 void JsonManager::processAllStopsReply(QVariant input)
 {
-
+	//TODO: make this actually do something
 }
 
 void JsonManager::networkReply()
@@ -174,6 +274,16 @@ void JsonManager::networkReply()
 		if(requestUrl.contains(STOP_SEARCH))
 		{
 			processStopSearchReply(myVar);
+		}
+
+		if(requestUrl.contains(STOPS_FOR_ROUTE))
+		{
+			processStopsForRouteReply(myVar);
+		}
+
+		if(requestUrl.contains(ROUTE_SEARCH))
+		{
+			processRouteSearchReply(myVar);
 		}
 	}
 }

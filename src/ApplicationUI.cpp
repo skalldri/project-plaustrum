@@ -30,12 +30,26 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
 void ApplicationUI::getStops()
 {
+	qDebug() << "Get all Stops";
 	json->GetAllStops("3");
+
+	qDebug() << "Get Stop by Code 501";
 	json->GetStopByCode("501");
+
+	qDebug() << "Get Stop by Radius";
 	json->GetStopByRadius(47.653435, -122.305641);
 	//json->GetStopByBoundedBox(47.653435, -122.305641, )
+
+	qDebug() << "Get All Agencies";
 	json->GetAllAgencies();
+
+	qDebug() << "Get Stops for Route 1_44";
+	json->GetStopsForRoute("1_44");
+
+	qDebug() << "Get Route By Code 1_44";
+	json->GetRouteByCode("1_44");
 }
+
 
 
 

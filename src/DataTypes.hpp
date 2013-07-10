@@ -8,6 +8,14 @@
 #ifndef DATATYPES_HPP_
 #define DATATYPES_HPP_
 
+struct Route_s
+{
+	QString shortName;
+	QString id;
+	QString description;
+
+} typedef Route;
+
 struct TransitAgency_s
 {
 	QString id;
@@ -35,16 +43,13 @@ struct Stop_s
 	QString code;
 	QString locationType;
 	QString wheelchairBoarding;
+	QList<Route> routeInfo;
 	//TODO: Add route info here
 
 } typedef Stop;
 
 
-struct Route_s
-{
-	//TODO: fill in the Route Struct
 
-} typedef Route;
 
 
 #endif /* DATATYPES_HPP_ */
