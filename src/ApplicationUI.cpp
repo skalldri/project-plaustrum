@@ -10,7 +10,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     // create scene document from main.qml asset
     // set parent to created document to ensure it exists for the whole application lifetime
     QmlDocument * qml = QmlDocument::create("asset:///main.qml").parent(this);
-
+    qml->setContextProperty("ApplicationUI", this);
     // create root object for the UI
     root = qml->createRootObject<AbstractPane>();
     // set created root object as a scene
@@ -19,15 +19,13 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     //Open a QSettings object with application settings
     appSettings = new AppSettings();
     json = new JsonManager(appSettings);
-    StopsView * myStopsView = new StopsView(root);
 
-    connect(json, SIGNAL(StopSearchReply(QList<Stop>)), myStopsView, SLOT(PopulateResults(QList<Stop>)));
-
-    //Connect all the Query managers here
-    Button* getTestDataButton = root->findChild<Button*>("getTestData");
-    connect(getTestDataButton, SIGNAL(clicked()), this, SLOT(getStops()));
+    /*Load tab items.*/
+    //Tab: Stops
+    PopulateFavoriteStops();
 }
 
+//TODO: Remove test function getStops()
 void ApplicationUI::getStops()
 {
 	qDebug() << "Get all Stops";
@@ -56,6 +54,44 @@ void ApplicationUI::getStops()
 
 	qDebug() << "Get Arrivals and Departures for Stop 1_75403";
 	json->GetArrivalsAndDepartures("1_75403");
+}
+
+void ApplicationUI::PopulateFavoriteStops()
+{
+	ListView * favoritesListView = root->findChild<ListView*>("favoriteStopsListView");
+	ArrayDataModel * favoritesListModel = root->findChild<ArrayDataModel*>("favoriteStopsListModel");
+	//Accept a list of stops as an argument
+
+	//foreach entry in stops list
+		//append a stop to the stopsListModel
+
+	for(int c = 0; c < 10; c++)
+	{
+		favoritesListModel->append(QVariant("Stop " + QString().number(c)));
+	}
+}
+
+void ApplicationUI::showStopsList(QString stopCode)
+{
+	QmlDocument * qmlStopsList = QmlDocument::create("asset:///stopsList.qml");
+	Page * stopListPage = qmlStopsList->createRootObject<Page>();
+	NavigationPane * navStops = root->findChild<NavigationPane*>("navStops");
+	navStops->push(stopListPage);
+    new StopsView(json, stopListPage, navStops);
+    json->GetStopByCode(stopCode);
+}
+
+//TODO: Delete test page.
+void ApplicationUI::showTestPage()
+{
+	QmlDocument * qml = QmlDocument::create("asset:///testPage.qml");
+
+	// Creates the root using the page node
+	Page * testPage = qml->createRootObject<Page>();
+
+	NavigationPane * navigationPane = root->findChild<NavigationPane*>("navTest");
+	// Push the test page
+	navigationPane->push(testPage);
 }
 
 

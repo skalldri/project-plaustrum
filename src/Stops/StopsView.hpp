@@ -10,11 +10,15 @@
 
 #include <QObject>
 #include <bb/cascades/Application>
-#include <bb/cascades/QmlDocument>
-#include <bb/cascades/AbstractPane>
-#include <bb/cascades/ListView>
 #include <bb/cascades/ArrayDataModel>
+#include <bb/cascades/Button>
+#include <bb/cascades/ListView>
+#include <bb/cascades/NavigationPane>
+#include <bb/cascades/Page>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/TextField>
 #include "../DataTypes.hpp"
+#include "../JsonManager.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -24,19 +28,18 @@ class StopsView : public QObject
 {
 	Q_OBJECT
 public:
-	StopsView(AbstractPane * parent);
+	StopsView(JsonManager * json, Page * view, NavigationPane * navPane);
 	virtual ~StopsView();
 	void PopulateFavorites();
 
 public slots:
+	void getStops();
 	void PopulateResults(QList<Stop> inputList);
 
 private:
-	ListView * stopsListView;
-	ArrayDataModel * stopsListModel;
-	ListView * favoritesListView;
-	ArrayDataModel * favoritesListModel;
-	AbstractPane * stopList;
+	JsonManager * json;
+	Page * view;
+	NavigationPane * navPane;
 };
 
 #endif /* STOPSVIEW_HPP_ */

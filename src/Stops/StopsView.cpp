@@ -9,38 +9,42 @@
 
 using namespace bb::cascades;
 
-StopsView::StopsView(AbstractPane * parent)
+StopsView::StopsView(JsonManager * json, Page * view, NavigationPane * navPane)
 {
-	favoritesListView = parent->findChild<ListView*>("favoriteStopsListView");
-	favoritesListModel = parent->findChild<ArrayDataModel*>("favoriteStopsListModel");
+	//Set private variables
+	this->json = json;
+	this->view = view;
+	this->navPane = navPane;
 
-	stopsListView = parent->findChild<ListView*>("stopsListView");
-	stopsListModel = parent->findChild<ArrayDataModel*>("stopsListModel");
-
-	PopulateFavorites();
+	//Connect StopSearchReply to PopulateResults
+	connect(json, SIGNAL(StopSearchReply(QList<Stop>)), this, SLOT(PopulateResults(QList<Stop>)));
 }
 
 StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopsView::PopulateFavorites()
+void StopsView::getStops()
 {
-	//Accept a list of stops as an argument
+	//Clear old results
+	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
+	stopsListModel->clear();
 
-	//foreach entry in stops list
-		//append a stop to the stopsListModel
+	//Get text from TextField
+	TextField * textStopCode = view->findChild<TextField*>("textStopCode");
+	QString stopCode = textStopCode->text();
 
-	for(int i = 0; i < 20; i++)
-	{
-		favoritesListModel->append(QVariant("Stop " + QString().number(i)));
-	}
+	//Use json.
+	json->GetStopByCode(stopCode);
 }
 
 void StopsView::PopulateResults(QList<Stop> inputList)
 {
-	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
+	ListView * stopsListView = view->findChild<ListView*>("stopsListView");
+	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
+
+	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
 
 	foreach(Stop current, inputList)
 	{

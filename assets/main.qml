@@ -15,27 +15,26 @@ TabbedPane {
     }
     Tab {
         title: qsTr("Stops")
+        id: tab1
         NavigationPane {
-            id: navStops
+            objectName: "navStops"
             Page {
-                Container {
-                    
+                Container {  
                     Header {
                         title: "Search"
                     }
                     Container {
                         layout: StackLayout {
                             orientation: LayoutOrientation.LeftToRight
-
                         }
                         TextField {
-                            id: textStopId
+                            id: textStopCode
                             textStyle.textAlign: TextAlign.Default
                         }
                         Button {
                             text: "Image"
                             onClicked: {
-                                navStops.push(stopsListPage);
+                            	ApplicationUI.showStopsList(textStopCode.text);
                             }
                         }
                     }
@@ -45,61 +44,17 @@ TabbedPane {
                     ListView {
                         objectName: "favoriteStopsListView"
                         dataModel: ArrayDataModel {
-                            objectName: "favoriteStopsListModel"
+                        	objectName: "favoriteStopsListModel"
                         }
                     }
-                }
-                                
-                actions: [
-                    ActionItem {
-                        title: "Delete"
-                        ActionBar.placement: ActionBarPlacement.OnBar
-                        onTriggered: {
-                            navStops.push(stopsListPage);
-                        }
-                        
-                        attachedObjects: ComponentDefinition {
-                            id: stopsListDefinition
-                            source: "stopsList.qml"
-                        }
-                    }
-                ]
+                }       
             }
-            onPopTransitionEnded: {
-                //page.destroy();
-            }
-
-            attachedObjects: [
-                Page {
-                    id: stopsListPage
-                    Container {
-                        Header {
-                            title: "Search Results"
-                        }
-                        ListView {
-                            objectName: "stopsListView"
-                            dataModel: ArrayDataModel {
-                                objectName: "stopsListModel"
-                            }
-                        }
-                    }
-
-                    paneProperties: NavigationPaneProperties {
-                        backButton: ActionItem {
-                            title: "Back"
-                            onTriggered: {
-                                navStops.pop();
-                            }
-                        }
-                    }
-                }
-            ]
         }
     }
     Tab {
         title: qsTr("Test Data Load")
         Page {
-            id: tab1
+            id: tab2
             actions: [
                 // define the actions for first tab here
                 ActionItem {
@@ -125,42 +80,27 @@ TabbedPane {
                     }
                 }
                 Button {
-                    objectName: "getTestData"
                     text: "Get Test Data"
                     verticalAlignment: VerticalAlignment.Bottom
                     horizontalAlignment: HorizontalAlignment.Center
+                    onClicked: {
+                        ApplicationUI.getStops();
+                    }
                 }
             }
         }
     }
     Tab {
         title: qsTr("Tab 3")
-        Page {
-            id: tab3
-            Container {
-                // define tab content here
-                Label {
-                    text: qsTr("Tab 3 title")
-                    horizontalAlignment: HorizontalAlignment.Center
-                    textStyle {
-                        base: SystemDefaults.TextStyles.TitleText
-                    }
-                }
+        id: tab3
+        NavigationPane {
+        	objectName: "navTest"
+            Page {
                 Container {
-                    layout: DockLayout {
-                    
-                    }
-                    layoutProperties: StackLayoutProperties {
-                        spaceQuota: 1.0
-                    }
-                    verticalAlignment: VerticalAlignment.Fill
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    Label {
-                        text: qsTr("Tab 3 content")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        textStyle {
-                            base: SystemDefaults.TextStyles.BodyText
+                    Button {
+                        text: "Test"
+                        onClicked: {
+                            ApplicationUI.showTestPage();
                         }
                     }
                 }

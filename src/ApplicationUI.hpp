@@ -3,10 +3,12 @@
 #define ApplicationUI_HPP_
 
 #include <QObject>
+#include <QMetaType>
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/Button>
+#include <bb/cascades/NavigationPane>
 #include "src/Stops/StopsView.hpp"
 #include "AppSettings.hpp"
 #include "JsonManager.hpp"
@@ -23,15 +25,18 @@ class ApplicationUI : public QObject
 {
     Q_OBJECT
 public:
-    ApplicationUI(bb::cascades::Application *app);
+    ApplicationUI(bb::cascades::Application * app);
     virtual ~ApplicationUI() {}
+    Q_INVOKABLE void showStopsList(QString stopCode);
+    Q_INVOKABLE void showTestPage();
+    JsonManager * json;
 
 public slots:
-	void getStops();
+	Q_INVOKABLE void getStops();
 
 private:
+	void PopulateFavoriteStops();
     AppSettings * appSettings;
-    JsonManager * json;
     AbstractPane * root;
 
 };

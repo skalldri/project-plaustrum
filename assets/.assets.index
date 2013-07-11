@@ -1,8 +1,7 @@
 1
-6
+5
 appSettings.ini
-images/picture1.png
-images/picture1br.png
 main.qml
 stopsInfo.qml
 stopsList.qml
+testPage.qml
