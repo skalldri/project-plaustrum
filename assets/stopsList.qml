@@ -12,14 +12,5 @@ Page {
             }
         }
     }
-    
-    paneProperties: NavigationPaneProperties {
-        backButton: ActionItem {
-            title: "Back"
-            onTriggered: {
-                navStops.pop();
-            }
-        }
-    }
 }
 

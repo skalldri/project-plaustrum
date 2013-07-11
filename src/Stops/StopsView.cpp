@@ -9,20 +9,15 @@
 
 using namespace bb::cascades;
 
-StopsView::StopsView(JsonManager * json, AbstractPane * parent)
+StopsView::StopsView(JsonManager * json, Page * view, NavigationPane * navPane)
 {
-	//Set private json
+	//Set private variables
 	this->json = json;
-	this->root = parent;
-	//Initialize button and connect signal to slot
-	//Connect all the Query managers here
-	Button* getStopCode = parent->findChild<Button*>("getStopCode");
-	connect(getStopCode, SIGNAL(clicked()), this, SLOT(getStops()));
+	this->view = view;
+	this->navPane = navPane;
 
 	//Connect StopSearchReply to PopulateResults
 	connect(json, SIGNAL(StopSearchReply(QList<Stop>)), this, SLOT(PopulateResults(QList<Stop>)));
-
-	PopulateFavorites();
 }
 
 StopsView::~StopsView() {
@@ -32,36 +27,21 @@ StopsView::~StopsView() {
 void StopsView::getStops()
 {
 	//Clear old results
-	ArrayDataModel * stopsListModel = root->findChild<ArrayDataModel*>("stopsListModel");
+	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
 
 	//Get text from TextField
-	TextField * textStopCode = root->findChild<TextField*>("textStopCode");
+	TextField * textStopCode = view->findChild<TextField*>("textStopCode");
 	QString stopCode = textStopCode->text();
 
 	//Use json.
 	json->GetStopByCode(stopCode);
 }
 
-void StopsView::PopulateFavorites()
-{
-	ListView * favoritesListView = root->findChild<ListView*>("favoriteStopsListView");
-	ArrayDataModel * favoritesListModel = root->findChild<ArrayDataModel*>("favoriteStopsListModel");
-	//Accept a list of stops as an argument
-
-	//foreach entry in stops list
-		//append a stop to the stopsListModel
-
-	for(int i = 0; i < 20; i++)
-	{
-		favoritesListModel->append(QVariant("Stop " + QString().number(i)));
-	}
-}
-
 void StopsView::PopulateResults(QList<Stop> inputList)
 {
-	ListView * stopsListView = root->findChild<ListView*>("stopsListView");
-	ArrayDataModel * stopsListModel = root->findChild<ArrayDataModel*>("stopsListModel");
+	ListView * stopsListView = view->findChild<ListView*>("stopsListView");
+	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
 
 	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
