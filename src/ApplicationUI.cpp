@@ -46,8 +46,16 @@ void ApplicationUI::getStops()
 	qDebug() << "Get Stops for Route 1_44";
 	json->GetStopsForRoute("1_44");
 
+	/*
+	 * Doesn't work for now: needs a real lat and lon
+
 	qDebug() << "Get Route By Code 1_44";
 	json->GetRouteByCode("1_44");
+
+	*/
+
+	qDebug() << "Get Arrivals and Departures for Stop 1_75403";
+	json->GetArrivalsAndDepartures("1_75403");
 }
 
 

@@ -14,7 +14,20 @@ struct Route_s
 	QString id;
 	QString description;
 
+	//TODO: consider adding a URL data type here
+
 } typedef Route;
+
+struct ArrivalAndDeparture_s
+{
+	QString routeId;
+	QString routeShortName;
+	unsigned int scheduledArrivalTime;
+	unsigned int predictedArrivalTime;
+	unsigned int scheduledDepartureTime;
+	unsigned int predictedDepartureTime;
+
+} typedef ArrivalAndDeparture;
 
 struct TransitAgency_s
 {

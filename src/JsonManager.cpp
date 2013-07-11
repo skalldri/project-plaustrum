@@ -39,41 +39,21 @@ void JsonManager::GetAllAgencies()
 	getUrl(ALL_AGENCIES);
 }
 
-void JsonManager::processAllAgenciesReply(QVariant input)
+void JsonManager::GetArrivalsAndDepartures(QString stopId, int minutesBefore, int minutesAfter)
 {
-	QList<TransitAgency> outputList;
+	QString request = "";
 
-	if(input.toMap()["code"].toInt() != 200)
+	if(minutesBefore != 5)
 	{
-		qWarning() << "All-Agencies Reply Status Code " << input.toMap()["code"].toInt();
-		return;
+		request += "&minutesBefore=" + QString().number(minutesBefore);
 	}
 
-	foreach(QVariant item, input.toMap()["data"].toList())
+	if(minutesAfter != 35)
 	{
-		QVariantMap agencyMap = item.toMap()["agency"].toMap();
-
-		TransitAgency localAgency;
-		localAgency.disclaimer = agencyMap["disclaimer"].toString();
-		localAgency.id = agencyMap["id"].toString();
-		localAgency.lang = agencyMap["lang"].toString();
-		localAgency.name = agencyMap["name"].toString();
-		localAgency.phone = agencyMap["phone"].toString();
-		localAgency.privateService = agencyMap["privateService"].toBool();
-		localAgency.timezone = agencyMap["timezone"].toString();
-		localAgency.url = agencyMap["url"].toString();
-
-		localAgency.lat = item.toMap()["lat"].toDouble();
-		localAgency.lon = item.toMap()["lon"].toDouble();
-		localAgency.latSpan = item.toMap()["latSpan"].toDouble();
-		localAgency.lonSpan = item.toMap()["lonSpan"].toDouble();
-
-		qDebug() << "Found agency " << localAgency.name << " with ID " << localAgency.id;
-
-		outputList.append(localAgency);
+		request += "&minutesAfter=" + QString().number(minutesAfter);
 	}
 
-	emit AllAgenciesReply(outputList);
+	getUrl(ARRIVALS_AND_DEPARTURES, stopId, request);
 }
 
 void JsonManager::GetStopByCode(QString stopCode)
@@ -107,12 +87,13 @@ void JsonManager::GetStopByBoundedBox(double lat, double lon, double latSpan, do
 	getUrl(STOP_SEARCH, "", request);
 }
 
-void JsonManager::GetRouteByCode(QString routeCode)
+void JsonManager::GetRouteByCode(QString routeCode, double lat, double lon)
 {
 	//TODO: error checking of input
 	//TODO: real lat and lon? take from the device GPS
+	QString request = "&lat=" + QString().number(lat) + "&lon=" + QString().number(lon) + "&query=" + routeCode;
 
-	getUrl(ROUTE_SEARCH, "", "&lat=0&lon=0&query=" + routeCode);
+	getUrl(ROUTE_SEARCH, "", request);
 }
 
 void JsonManager::GetRouteByRadius(double lat, double lon, double radius)
@@ -169,6 +150,43 @@ void JsonManager::processStopsForRouteReply(QVariant input)
 	emit StopsForRouteReply(outputList, input.toMap()["data"].toMap()["entry"].toMap()["routeId"].toString());
 }
 
+void JsonManager::processAllAgenciesReply(QVariant input)
+{
+	QList<TransitAgency> outputList;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "All-Agencies Reply Status Code " << input.toMap()["code"].toInt();
+		return;
+	}
+
+	foreach(QVariant item, input.toMap()["data"].toList())
+	{
+		QVariantMap agencyMap = item.toMap()["agency"].toMap();
+
+		TransitAgency localAgency;
+		localAgency.disclaimer = agencyMap["disclaimer"].toString();
+		localAgency.id = agencyMap["id"].toString();
+		localAgency.lang = agencyMap["lang"].toString();
+		localAgency.name = agencyMap["name"].toString();
+		localAgency.phone = agencyMap["phone"].toString();
+		localAgency.privateService = agencyMap["privateService"].toBool();
+		localAgency.timezone = agencyMap["timezone"].toString();
+		localAgency.url = agencyMap["url"].toString();
+
+		localAgency.lat = item.toMap()["lat"].toDouble();
+		localAgency.lon = item.toMap()["lon"].toDouble();
+		localAgency.latSpan = item.toMap()["latSpan"].toDouble();
+		localAgency.lonSpan = item.toMap()["lonSpan"].toDouble();
+
+		qDebug() << "Found agency " << localAgency.name << " with ID " << localAgency.id;
+
+		outputList.append(localAgency);
+	}
+
+	emit AllAgenciesReply(outputList);
+}
+
 void JsonManager::processStopSearchReply(QVariant input)
 {
 	QList<Stop> outputList;
@@ -205,6 +223,50 @@ void JsonManager::processRouteSearchReply(QVariant input)
 
 	emit RouteSearchReply(outputList);
 }
+
+void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
+{
+	QList<ArrivalAndDeparture> outputList;
+	Stop myStop;
+
+	if(input.toMap()["code"].toInt() != 200)
+	{
+		qWarning() << "Arrivals And Departure Reply Status Code " << input.toMap()["code"].toInt();
+		return;
+	}
+
+	myStop = parseStop(input.toMap()["data"].toMap()["stop"].toMap());
+
+	foreach(QVariant item, input.toMap()["data"].toMap()["arrivalsAndDepartures"].toList())
+	{
+		outputList.append(parseArrivalAndDeparture(item.toMap()));
+	}
+
+	qDebug() << "Arrivals and Departures for Stop " << myStop.code;
+
+	emit ArivalsAndDeparturesReply(outputList, myStop);
+}
+
+ArrivalAndDeparture JsonManager::parseArrivalAndDeparture(QVariantMap arrivalAndDepartureMap)
+{
+	ArrivalAndDeparture localAad;
+	localAad.routeId = arrivalAndDepartureMap["routeId"].toString();
+	localAad.routeShortName = arrivalAndDepartureMap["routeShortName"].toString();
+	localAad.predictedArrivalTime = arrivalAndDepartureMap["predictedArrivalTime"].toUInt();
+	localAad.scheduledArrivalTime = arrivalAndDepartureMap["scheduledArrivalTime"].toUInt();
+	localAad.predictedDepartureTime = arrivalAndDepartureMap["predictedDepartureTime"].toUInt();
+	localAad.scheduledDepartureTime = arrivalAndDepartureMap["scheduledDepartureTime"].toUInt();
+
+	qDebug() << "Arrival for route " << localAad.routeShortName;
+
+	return localAad;
+}
+
+void JsonManager::processAllStopsReply(QVariant input)
+{
+	//TODO: make this actually do something
+}
+
 
 Stop JsonManager::parseStop(QVariantMap stopMap)
 {
@@ -247,11 +309,6 @@ Route JsonManager::parseRoute(QVariantMap routeEntry)
 	return localRoute;
 }
 
-void JsonManager::processAllStopsReply(QVariant input)
-{
-	//TODO: make this actually do something
-}
-
 void JsonManager::networkReply()
 {
 	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
@@ -284,6 +341,11 @@ void JsonManager::networkReply()
 		if(requestUrl.contains(ROUTE_SEARCH))
 		{
 			processRouteSearchReply(myVar);
+		}
+
+		if(requestUrl.contains(ARRIVALS_AND_DEPARTURES))
+		{
+			processArrivalsAndDeparturesReply(myVar);
 		}
 	}
 }
