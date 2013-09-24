@@ -28,6 +28,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 //TODO: Remove test function getStops()
 void ApplicationUI::getStops()
 {
+	/*
+
 	qDebug() << "Get all Stops";
 	json->GetAllStops("3");
 
@@ -43,6 +45,8 @@ void ApplicationUI::getStops()
 
 	qDebug() << "Get Stops for Route 1_44";
 	json->GetStopsForRoute("1_44");
+
+	*/
 
 	/*
 	 * Doesn't work for now: needs a real lat and lon
@@ -84,14 +88,17 @@ void ApplicationUI::showStopsList(QString stopCode)
 //TODO: Delete test page.
 void ApplicationUI::showTestPage()
 {
-	QmlDocument * qml = QmlDocument::create("asset:///testPage.qml");
+	/*QmlDocument * qml = QmlDocument::create("asset:///testPage.qml");
 
 	// Creates the root using the page node
 	Page * testPage = qml->createRootObject<Page>();
 
 	NavigationPane * navigationPane = root->findChild<NavigationPane*>("navTest");
 	// Push the test page
-	navigationPane->push(testPage);
+	navigationPane->push(testPage);*/
+
+	NavigationPane * navStops = root->findChild<NavigationPane*>("navTest");
+	new MapView(json, navStops);
 }
 
 

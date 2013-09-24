@@ -80,6 +80,7 @@ signals:
 	void error(QNetworkReply::NetworkError);
 	void variantReplyMap(QVariant);
 	void testReplyMap(QVariant);
+	void ApiFailure(int); //Returns the error code from the API
 	void AllAgenciesReply(QList<TransitAgency>); //Returns a list of transit agencies
 	void StopSearchReply(QList<Stop>); //Returns a list of stops
 	void StopsForRouteReply(QList<Stop>, QString); //Returns a list of stops and the Route ID it was called for

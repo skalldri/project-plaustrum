@@ -2,11 +2,11 @@ TEMPLATE = app
 TARGET = plaustrum
 
 CONFIG += qt warn_on debug_and_release cascades
-LIBS += -lbbdata -lbbsystem
+LIBS += -lbbdata -lbbsystem -lbbcascadesmaps
 
 INCLUDEPATH += ../src
-SOURCES += ../src/*.cpp ../src/Stops/*.cpp
-HEADERS += ../src/*.hpp ../src/*.h ../src/Stops/*.hpp
+SOURCES += ../src/*.cpp ../src/Stops/*.cpp ../src/Map/*.cpp
+HEADERS += ../src/*.hpp ../src/*.h ../src/Stops/*.hpp ../src/Map/*.hpp
 
 lupdate_inclusion {
     SOURCES += ../assets/*.qml
