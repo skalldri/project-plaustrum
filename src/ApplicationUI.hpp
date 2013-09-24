@@ -13,6 +13,7 @@
 #include "AppSettings.hpp"
 #include "JsonManager.hpp"
 #include "DataTypes.hpp"
+#include "src/Map/MapView.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 

@@ -26,8 +26,13 @@
 #define ALL_AGENCIES "agencies-with-coverage"
 #define ALL_STOPS "stop-ids-for-agency"
 #define STOP_SEARCH "stops-for-location"
+#define STOPS_FOR_ROUTE "stops-for-route"
+#define ROUTE_SEARCH "routes-for-location"
+#define ARRIVALS_AND_DEPARTURES "arrivals-and-departures-for-stop"
 
 using namespace bb::data;
+
+//FIXME: This class should be a singleton
 
 class JsonManager : public QObject
 {
@@ -43,13 +48,25 @@ public slots:
 	void GetStopByCode(QString stopCode);
 	void GetStopByRadius(double lat, double lon, double radius = -1.0);
 	void GetStopByBoundedBox(double lat, double lon, double latSpan, double lonSpan);
+	void GetStopsForRoute(QString routeId);
+	void GetRouteByBoundedBox(double lat, double lon, double latSpan, double lonSpan);
+	void GetRouteByRadius(double lat, double lon, double radius);
+	void GetRouteByCode(QString routeCode, double lat, double lon);
+	void GetArrivalsAndDepartures(QString stopId, int minutesBefore = 5, int minutesAfter = 32);
 
 private:
 	QVariant validateReply(QNetworkReply* reply);
 
+	Stop parseStop(QVariantMap stopMap);
+	Route parseRoute(QVariantMap routeEntry);
+	ArrivalAndDeparture parseArrivalAndDeparture(QVariantMap arrivalAndDepartureMap);
+
 	void processAllAgenciesReply(QVariant input);
 	void processAllStopsReply(QVariant input);
 	void processStopSearchReply(QVariant input);
+	void processStopsForRouteReply(QVariant input);
+	void processRouteSearchReply(QVariant input);
+	void processArrivalsAndDeparturesReply(QVariant input);
 
 	void getUrl(QString function, QString specifier = "", QString parameters = "");
 
@@ -63,8 +80,12 @@ signals:
 	void error(QNetworkReply::NetworkError);
 	void variantReplyMap(QVariant);
 	void testReplyMap(QVariant);
-	void AllAgenciesReply(QList<TransitAgency>);
-	void StopSearchReply(QList<QVariantMap>);
+	void ApiFailure(int); //Returns the error code from the API
+	void AllAgenciesReply(QList<TransitAgency>); //Returns a list of transit agencies
+	void StopSearchReply(QList<Stop>); //Returns a list of stops
+	void StopsForRouteReply(QList<Stop>, QString); //Returns a list of stops and the Route ID it was called for
+	void RouteSearchReply(QList<Route>); //Returns a list of routes
+	void ArivalsAndDeparturesReply(QList<ArrivalAndDeparture>, Stop); //Returns a list of ArrivalAndDeparture objects for a stop, along with a reference to the stop
 
 };
 

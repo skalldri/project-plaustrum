@@ -28,11 +28,36 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 //TODO: Remove test function getStops()
 void ApplicationUI::getStops()
 {
-	//json->GetAllStops("3");
+	/*
+
+	qDebug() << "Get all Stops";
+	json->GetAllStops("3");
+
+	qDebug() << "Get Stop by Code 501";
 	json->GetStopByCode("501");
-	//json->GetStopByRadius(47.653435, -122.305641);
+
+	qDebug() << "Get Stop by Radius";
+	json->GetStopByRadius(47.653435, -122.305641);
 	//json->GetStopByBoundedBox(47.653435, -122.305641, )
-	//json->GetAllAgencies();
+
+	qDebug() << "Get All Agencies";
+	json->GetAllAgencies();
+
+	qDebug() << "Get Stops for Route 1_44";
+	json->GetStopsForRoute("1_44");
+
+	*/
+
+	/*
+	 * Doesn't work for now: needs a real lat and lon
+
+	qDebug() << "Get Route By Code 1_44";
+	json->GetRouteByCode("1_44");
+
+	*/
+
+	qDebug() << "Get Arrivals and Departures for Stop 1_75403";
+	json->GetArrivalsAndDepartures("1_75403");
 }
 
 void ApplicationUI::PopulateFavoriteStops()
@@ -63,15 +88,19 @@ void ApplicationUI::showStopsList(QString stopCode)
 //TODO: Delete test page.
 void ApplicationUI::showTestPage()
 {
-	QmlDocument * qml = QmlDocument::create("asset:///testPage.qml");
+	/*QmlDocument * qml = QmlDocument::create("asset:///testPage.qml");
 
 	// Creates the root using the page node
 	Page * testPage = qml->createRootObject<Page>();
 
 	NavigationPane * navigationPane = root->findChild<NavigationPane*>("navTest");
 	// Push the test page
-	navigationPane->push(testPage);
+	navigationPane->push(testPage);*/
+
+	NavigationPane * navStops = root->findChild<NavigationPane*>("navTest");
+	new MapView(json, navStops);
 }
+
 
 
 
