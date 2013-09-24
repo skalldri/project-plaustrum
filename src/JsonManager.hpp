@@ -64,7 +64,7 @@ signals:
 	void variantReplyMap(QVariant);
 	void testReplyMap(QVariant);
 	void AllAgenciesReply(QList<TransitAgency>);
-	void StopSearchReply(QList<Stop>);
+	void StopSearchReply(QList<QVariantMap>);
 
 };
 

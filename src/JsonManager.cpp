@@ -109,7 +109,7 @@ void JsonManager::GetStopByBoundedBox(double lat, double lon, double latSpan, do
 
 void JsonManager::processStopSearchReply(QVariant input)
 {
-	QList<Stop> outputList;
+	QList<QVariantMap> outputList;
 
 	if(input.toMap()["code"].toInt() != 200)
 	{
@@ -121,7 +121,7 @@ void JsonManager::processStopSearchReply(QVariant input)
 	{
 		QVariantMap stopMap = item.toMap();
 
-		Stop localStop;
+		/*Stop localStop;
 		localStop.id = stopMap["id"].toString();
 		localStop.code = stopMap["code"].toString();
 		localStop.name = stopMap["name"].toString();
@@ -133,9 +133,9 @@ void JsonManager::processStopSearchReply(QVariant input)
 
 		//TODO: add route info to the localStop objects
 
-		qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;
-
-		outputList.append(localStop);
+		qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;*/
+		qDebug() << "Found stop " << stopMap["id"].toString();
+		outputList.append(stopMap);
 	}
 
 	emit StopSearchReply(outputList);

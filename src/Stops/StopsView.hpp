@@ -34,7 +34,7 @@ public:
 
 public slots:
 	void getStops();
-	void PopulateResults(QList<Stop> inputList);
+	void PopulateResults(QList<QVariantMap> inputList);
 
 private:
 	JsonManager * json;
