@@ -189,7 +189,7 @@ void JsonManager::processAllAgenciesReply(QVariant input)
 
 void JsonManager::processStopSearchReply(QVariant input)
 {
-	QList<Stop> outputList;
+	QList<QVariantMap> outputList;
 
 	if(input.toMap()["code"].toInt() != 200)
 	{
@@ -200,7 +200,8 @@ void JsonManager::processStopSearchReply(QVariant input)
 	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
 	{
 		QVariantMap stopMap = item.toMap();
-		outputList.append(parseStop(stopMap));
+		outputList.append(stopMap);
+		//outputList.append(parseStop(stopMap));
 	}
 
 	emit StopSearchReply(outputList);
@@ -226,12 +227,8 @@ void JsonManager::processRouteSearchReply(QVariant input)
 
 void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 {
-<<<<<<< HEAD
-	QList<QVariantMap> outputList;
-=======
 	QList<ArrivalAndDeparture> outputList;
 	Stop myStop;
->>>>>>> master
 
 	if(input.toMap()["code"].toInt() != 200)
 	{
@@ -246,29 +243,11 @@ void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 		outputList.append(parseArrivalAndDeparture(item.toMap()));
 	}
 
-<<<<<<< HEAD
-		/*Stop localStop;
-		localStop.id = stopMap["id"].toString();
-		localStop.code = stopMap["code"].toString();
-		localStop.name = stopMap["name"].toString();
-		localStop.lat = stopMap["lat"].toDouble();
-		localStop.lon = stopMap["lon"].toDouble();
-		localStop.locationType = stopMap["locationType"].toString();
-		localStop.direction = stopMap["direction"].toString();
-		localStop.wheelchairBoarding = stopMap["wheelchairBoarding"].toString();
-=======
 	qDebug() << "Arrivals and Departures for Stop " << myStop.code;
->>>>>>> master
 
 	emit ArivalsAndDeparturesReply(outputList, myStop);
 }
 
-<<<<<<< HEAD
-		qDebug() << "Found stop " << localStop.name << " with ID " << localStop.id;*/
-		qDebug() << "Found stop " << stopMap["id"].toString();
-		outputList.append(stopMap);
-	}
-=======
 ArrivalAndDeparture JsonManager::parseArrivalAndDeparture(QVariantMap arrivalAndDepartureMap)
 {
 	ArrivalAndDeparture localAad;
@@ -280,7 +259,6 @@ ArrivalAndDeparture JsonManager::parseArrivalAndDeparture(QVariantMap arrivalAnd
 	localAad.scheduledDepartureTime = arrivalAndDepartureMap["scheduledDepartureTime"].toUInt();
 
 	qDebug() << "Arrival for route " << localAad.routeShortName;
->>>>>>> master
 
 	return localAad;
 }
