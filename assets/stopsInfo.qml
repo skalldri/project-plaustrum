@@ -31,7 +31,7 @@ Page {
                                     orientation: LayoutOrientation.LeftToRight;                
                                 }
                                 Label{
-                                    text: ListItemData.code;
+                                    text: ListItemData.routeId;
                                     verticalAlignment: VerticalAlignment.Center
                                     textStyle.fontWeight: FontWeight.Bold
                                     textStyle.textAlign: TextAlign.Center
@@ -41,7 +41,7 @@ Page {
                                     bottomPadding: 10
                                     verticalAlignment: VerticalAlignment.Center
                                     Label{
-                                        text: ListItemData.name
+                                        text: ListItemData.routeShortName
                                     }
                                 }
                             }

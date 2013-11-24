@@ -50,7 +50,7 @@ void StopsView::showStop(qint32 index)
 {
 	new StopItemView(json, navPane);
 
-	QString stopId = stopList.at(index)["code"].toString();
+	QString stopId = stopList.at(index)["id"].toString();
 	json->GetArrivalsAndDepartures(stopId);
 }
 
