@@ -1,5 +1,8 @@
 // Tabbed Pane project template
 import bb.cascades 1.0
+import QtMobility.sensors 1.2
+import bb.cascades.maps 1.0
+import QtMobilitySubset.location 1.1
 
 TabbedPane {
     showTabsOnActionBar: false
@@ -91,20 +94,36 @@ TabbedPane {
         }
     }
     Tab {
-        title: qsTr("Tab 3")
-        id: tab3
-        NavigationPane {
-        	objectName: "navTest"
-            Page {
-                Container {
-                    Button {
-                        text: "Test"
-                        onClicked: {
-                            ApplicationUI.showTestPage();
-                        }
-                    }
+        title: qsTr("Map")
+        id: mapTab
+        Page {
+            Container {
+                // The map view
+                MapView {
+                    objectName: "mapView"
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    followedId: "device-location-id"
+                    // Enforce the usage of the 3D rendering engine
+                    //onCreationCompleted: setRenderEngine("RenderEngine3D")
                 }
             }
         }
+        attachedObjects: [
+            PositionSource {
+                id: positionSource
+                updateInterval: 2000
+                active: true
+                onPositionChanged: {
+                    ApplicationUI.updateDeviceLocation(
+                    positionSource.position.coordinate.latitude, 
+                    positionSource.position.coordinate.longitude);
+                }
+            }
+        ]
     }
 }
+
+
+
+
+

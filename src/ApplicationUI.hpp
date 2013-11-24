@@ -9,6 +9,10 @@
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/Button>
 #include <bb/cascades/NavigationPane>
+#include <bb/cascades/maps/DataProvider>
+#include <bb/cascades/maps/MapView>
+#include <bb/cascades/maps/MapData>
+#include <bb/platform/geo/GeoLocation>
 #include "src/Stops/StopsView.hpp"
 #include "AppSettings.hpp"
 #include "JsonManager.hpp"
@@ -30,6 +34,7 @@ public:
     virtual ~ApplicationUI() {}
     Q_INVOKABLE void showStopsList(QString stopCode);
     Q_INVOKABLE void showTestPage();
+    Q_INVOKABLE void updateDeviceLocation(double lat, double lon);
     JsonManager * json;
 
 public slots:
@@ -39,6 +44,8 @@ private:
 	void PopulateFavoriteStops();
     AppSettings * appSettings;
     AbstractPane * root;
+    bb::cascades::maps::MapView* mapView;
+    bb::platform::geo::GeoLocation* deviceLocation;
 
 };
 
