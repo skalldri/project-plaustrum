@@ -1,7 +1,6 @@
 1
-5
-appSettings.ini
-stopsList.qml
-mapView.qml
-stopsInfo.qml
+4
 main.qml
+stopsList.qml
+appSettings.ini
+stopsInfo.qml

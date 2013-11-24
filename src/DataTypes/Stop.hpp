@@ -10,6 +10,7 @@
 
 #include <QVariantMap>
 #include <DataTypes/Route.hpp>
+#include <QList>
 
 class Stop
 {
@@ -26,7 +27,9 @@ class Stop
 		//TODO: Add route info here
 
 	public:
-		QVariantMap ToVariantMap();
+		const QVariantMap ToVariantMap();
 };
+
+typedef QList<Stop> StopList;
 
 #endif /* STOP_HPP_ */

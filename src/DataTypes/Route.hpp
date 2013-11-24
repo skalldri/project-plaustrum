@@ -9,6 +9,7 @@
 #define ROUTE_HPP_
 
 #include <QVariantMap>
+#include <QList>
 
 class Route
 {
@@ -19,7 +20,9 @@ class Route
 		//TODO: consider adding a URL data type here
 
 	public:
-		QVariantMap ToVariantMap();
+		const QVariantMap ToVariantMap();
 };
+
+typedef QList<Route> RouteList;
 
 #endif /* ROUTE_HPP_ */

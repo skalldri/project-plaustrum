@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = plaustrum
 
 CONFIG += qt warn_on debug_and_release cascades
-LIBS += -lbbdata -lbbsystem -lbbcascadesmaps
+LIBS += -lbbdata -lbbsystem -lbbcascadesmaps -lQtLocationSubset
 
 INCLUDEPATH += ../src
 SOURCES += ../src/*.cpp ../src/Stops/*.cpp ../src/Map/*.cpp ../src/DataTypes/*.cpp
