@@ -21,28 +21,27 @@ StopsView::StopsView(JsonManager * json, NavigationPane * navPane)
 	navPane->push(view);
 
 	//Connect StopSearchReply to PopulateResults
-	connect(json, SIGNAL(StopSearchReply(QList<QVariantMap>)), this, SLOT(PopulateResults(QList<QVariantMap>)));
+	connect(json, SIGNAL(StopSearchReply(QList<Stop>)), this, SLOT(PopulateResults(QList<Stop>)));
 }
 
 StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopsView::PopulateResults(QList<QVariantMap> inputList)
+void StopsView::PopulateResults(QList<Stop> stopList)
 {
-	stopList = inputList;
+	this->stopList = stopList;
 	ListView * stopsListView = view->findChild<ListView*>("stopsListView");
 	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
 
 	//TODO: implement a way to request results be cleared separately (possibly from the Search bar)
 
-	foreach(QVariantMap current, inputList)
+	foreach(Stop current, stopList)
 	{
-		//qDebug() << "Adding element " << current.name;
-		//stopsListModel->append(QVariant(current.name + " (" + current.code + ")"));
-		qDebug() << "Adding " << current["name"].toString();
-		stopsListModel->append(current);
+		QVariantMap stop = current.ToVariantMap();
+		qDebug() << "Adding " << stop["name"].toString();
+		stopsListModel->append(stop);
 	}
 }
 
@@ -50,7 +49,8 @@ void StopsView::showStop(qint32 index)
 {
 	new StopItemView(json, navPane);
 
-	QString stopId = stopList.at(index)["id"].toString();
+	QVariantMap stop = stopList.at(index).ToVariantMap();
+	QString stopId = stop["id"].toString();
 	json->GetArrivalsAndDepartures(stopId);
 }
 
