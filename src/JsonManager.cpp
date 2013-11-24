@@ -245,7 +245,7 @@ void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 
 	qDebug() << "Arrivals and Departures for Stop " << myStop.code;
 
-	emit ArivalsAndDeparturesReply(outputList, myStop);
+	emit ArrivalsAndDeparturesReply(outputList, myStop);
 }
 
 ArrivalAndDeparture JsonManager::parseArrivalAndDeparture(QVariantMap arrivalAndDepartureMap)

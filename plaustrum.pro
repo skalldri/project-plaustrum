@@ -5,8 +5,8 @@ CONFIG += qt warn_on debug_and_release cascades
 LIBS += -lbbdata -lbbsystem -lbbcascadesmaps
 
 INCLUDEPATH += ../src
-SOURCES += ../src/*.cpp ../src/Stops/*.cpp ../src/Map/*.cpp
-HEADERS += ../src/*.hpp ../src/*.h ../src/Stops/*.hpp ../src/Map/*.hpp
+SOURCES += ../src/*.cpp ../src/Stops/*.cpp ../src/Map/*.cpp ../src/DataTypes/*.cpp
+HEADERS += ../src/*.hpp ../src/*.h ../src/Stops/*.hpp ../src/Map/*.hpp ../src/DataTypes/*.hpp
 
 lupdate_inclusion {
     SOURCES += ../assets/*.qml
