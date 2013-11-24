@@ -1,7 +1,6 @@
 1
-5
-appSettings.ini
+4
 main.qml
-stopsInfo.qml
 stopsList.qml
-testPage.qml
+appSettings.ini
+stopsInfo.qml

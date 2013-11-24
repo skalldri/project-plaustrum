@@ -20,6 +20,40 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
     appSettings = new AppSettings();
     json = new JsonManager(appSettings);
 
+    //Setup the map
+
+    QObject* mapViewAsQObject = root->findChild<QObject*>(QString("mapView"));
+
+    if (mapViewAsQObject)
+    {
+        mapView = qobject_cast<bb::cascades::maps::MapView*>(mapViewAsQObject);
+
+        if (mapView)
+        {
+        	mapView->setCaptionGoButtonVisible(true);
+
+            // Create a data provider just for the device
+            // location object. When the clear function is
+            // called, this object is not removed.
+        	bb::cascades::maps::DataProvider* deviceLocDataProv = new bb::cascades::maps::DataProvider("device-location-data-provider");
+            mapView->mapData()->addProvider(deviceLocDataProv);
+
+            // Create a geolocation just for the device's location.
+            deviceLocation = new bb::platform::geo::GeoLocation("device-location-id");
+            deviceLocation->setName("Current Device Location");
+
+            deviceLocDataProv->add(deviceLocation);
+        }
+        else
+		{
+			qDebug() << "Couldn't cast to MapView";
+		}
+    }
+    else
+    {
+    	qDebug() << "Couldn't find child";
+    }
+
     /*Load tab items.*/
     //Tab: Stops
     PopulateFavoriteStops();
@@ -28,8 +62,6 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 //TODO: Remove test function getStops()
 void ApplicationUI::getStops()
 {
-	/*
-
 	qDebug() << "Get all Stops";
 	json->GetAllStops("3");
 
@@ -45,8 +77,6 @@ void ApplicationUI::getStops()
 
 	qDebug() << "Get Stops for Route 1_44";
 	json->GetStopsForRoute("1_44");
-
-	*/
 
 	/*
 	 * Doesn't work for now: needs a real lat and lon
@@ -97,11 +127,22 @@ void ApplicationUI::showTestPage()
 	// Push the test page
 	navigationPane->push(testPage);*/
 
-	NavigationPane * navStops = root->findChild<NavigationPane*>("navTest");
-	new MapView(json, navStops);
+	//NavigationPane * navStops = root->findChild<NavigationPane*>("navTest");
+	//new MapView(json, navStops);
 }
 
-
+void ApplicationUI::updateDeviceLocation(double lat, double lon) {
+    if (mapView) {
+        qDebug() << "ApplicationUI::updateDeviceLocation("
+            " " << lat << ", " << lon << " )";
+        if (deviceLocation) {
+            deviceLocation->setLatitude(lat);
+            deviceLocation->setLongitude(lon);
+        }
+        mapView->setLatitude(lat);
+        mapView->setLongitude(lon);
+    }
+}
 
 
 

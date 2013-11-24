@@ -9,10 +9,10 @@
 
 MapView::MapView(JsonManager * json, NavigationPane * navPaneInput)
 {
-		navPane = navPaneInput;
+		/*navPane = navPaneInput;
 		qmlMapView = QmlDocument::create("asset:///mapView.qml");
 		mapViewPage = qmlMapView->createRootObject<Page>();
-		navPane->push(mapViewPage);
+		navPane->push(mapViewPage);*/
 }
 
 MapView::~MapView() {
