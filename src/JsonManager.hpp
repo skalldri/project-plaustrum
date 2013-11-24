@@ -86,7 +86,7 @@ signals:
 	void StopSearchReply(QList<QVariantMap>); //Returns a list of stops
 	void StopsForRouteReply(QList<Stop>, QString); //Returns a list of stops and the Route ID it was called for
 	void RouteSearchReply(QList<Route>); //Returns a list of routes
-	void ArrivalsAndDeparturesReply(QList<QVariantMap>, Stop); //Returns a list of ArrivalAndDeparture objects for a stop, along with a reference to the stop
+	void ArrivalsAndDeparturesReply(QList<ArrivalAndDeparture>, Stop); //Returns a list of ArrivalAndDeparture objects for a stop, along with a reference to the stop
 
 };
 
