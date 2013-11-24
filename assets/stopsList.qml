@@ -10,6 +10,9 @@ Page {
             dataModel: ArrayDataModel {
                 objectName: "stopsListModel"
             }
+            onTriggered: {
+                StopsView.showStop(indexPath);
+            }
             listItemComponents: [
                 ListItemComponent {  
                     Container{

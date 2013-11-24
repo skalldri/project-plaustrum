@@ -77,11 +77,8 @@ void ApplicationUI::PopulateFavoriteStops()
 
 void ApplicationUI::showStopsList(QString stopCode)
 {
-	QmlDocument * qmlStopsList = QmlDocument::create("asset:///stopsList.qml");
-	Page * stopListPage = qmlStopsList->createRootObject<Page>();
 	NavigationPane * navStops = root->findChild<NavigationPane*>("navStops");
-	navStops->push(stopListPage);
-    new StopsView(json, stopListPage, navStops);
+    new StopsView(json, navStops);
     json->GetStopByCode(stopCode);
 }
 

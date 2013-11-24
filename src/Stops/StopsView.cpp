@@ -9,12 +9,16 @@
 
 using namespace bb::cascades;
 
-StopsView::StopsView(JsonManager * json, Page * view, NavigationPane * navPane)
+StopsView::StopsView(JsonManager * json, NavigationPane * navPane)
 {
 	//Set private variables
 	this->json = json;
-	this->view = view;
 	this->navPane = navPane;
+
+	QmlDocument * qmlStopsList = QmlDocument::create("asset:///stopsList.qml");
+	qmlStopsList->setContextProperty("StopsView", this);
+	view = qmlStopsList->createRootObject<Page>();
+	navPane->push(view);
 
 	//Connect StopSearchReply to PopulateResults
 	connect(json, SIGNAL(StopSearchReply(QList<QVariantMap>)), this, SLOT(PopulateResults(QList<QVariantMap>)));
@@ -24,22 +28,9 @@ StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopsView::getStops()
-{
-	//Clear old results
-	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
-	stopsListModel->clear();
-
-	//Get text from TextField
-	TextField * textStopCode = view->findChild<TextField*>("textStopCode");
-	QString stopCode = textStopCode->text();
-
-	//Use json.
-	json->GetStopByCode(stopCode);
-}
-
 void StopsView::PopulateResults(QList<QVariantMap> inputList)
 {
+	stopList = inputList;
 	ListView * stopsListView = view->findChild<ListView*>("stopsListView");
 	ArrayDataModel * stopsListModel = view->findChild<ArrayDataModel*>("stopsListModel");
 	stopsListModel->clear();
@@ -50,7 +41,16 @@ void StopsView::PopulateResults(QList<QVariantMap> inputList)
 	{
 		//qDebug() << "Adding element " << current.name;
 		//stopsListModel->append(QVariant(current.name + " (" + current.code + ")"));
-        qDebug() << "Adding " << current["name"].toString();
+		qDebug() << "Adding " << current["name"].toString();
 		stopsListModel->append(current);
 	}
 }
+
+void StopsView::showStop(qint32 index)
+{
+	new StopItemView(json, navPane);
+
+	QString stopId = stopList.at(index)["code"].toString();
+	json->GetArrivalsAndDepartures(stopId);
+}
+
