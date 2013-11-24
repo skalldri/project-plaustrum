@@ -22,7 +22,7 @@ class ArrivalAndDeparture
 		unsigned int predictedDepartureTime;
 
 	public:
-		const QVariantMap ToVariantMap();
+		QVariantMap ToVariantMap() const;
 };
 
 typedef QList<ArrivalAndDeparture> ArrivalAndDepartureList;

@@ -20,7 +20,7 @@ class Route
 		//TODO: consider adding a URL data type here
 
 	public:
-		const QVariantMap ToVariantMap();
+		QVariantMap ToVariantMap() const;
 };
 
 typedef QList<Route> RouteList;

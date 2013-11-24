@@ -28,7 +28,7 @@ class TransitAgency
 		double lonSpan;
 
 	public:
-		const QVariantMap ToVariantMap();
+		QVariantMap ToVariantMap() const;
 };
 
 typedef QList<TransitAgency> TransitAgencyList;

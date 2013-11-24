@@ -7,7 +7,7 @@
 
 #include "ArrivalAndDeparture.hpp"
 
-const QVariantMap ArrivalAndDeparture::ToVariantMap()
+QVariantMap ArrivalAndDeparture::ToVariantMap() const
 {
 	QVariantMap reply;
 
