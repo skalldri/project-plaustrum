@@ -7,7 +7,7 @@
 
 #include "Stop.hpp"
 
-const QVariantMap Stop::ToVariantMap()
+QVariantMap Stop::ToVariantMap() const
 {
 	QVariantMap reply;
 

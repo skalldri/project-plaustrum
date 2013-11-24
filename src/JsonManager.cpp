@@ -199,8 +199,7 @@ void JsonManager::processStopSearchReply(QVariant input)
 
 	foreach(QVariant item, input.toMap()["data"].toMap()["stops"].toList())
 	{
-		QVariantMap stopMap = item.toMap();
-		outputList.append(parseStop(stopMap));
+		outputList.append(parseStop(item.toMap()));
 	}
 
 	emit StopSearchReply(outputList);

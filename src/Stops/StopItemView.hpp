@@ -32,14 +32,14 @@ public:
 	virtual ~StopItemView();
 
 public slots:
-	void setDepartureTimes(QList<QVariantMap> inputList, Stop stop);
+	void setDepartureTimes(QList<ArrivalAndDeparture> inputList, Stop stop);
 
 private:
 	JsonManager * json;
 	Page * view;
 	NavigationPane * navPane;
 	Stop stop;
-	QList<QVariantMap> departureList;
+	QList<ArrivalAndDeparture> departureList;
 };
 
 #endif /* STOPITEMVIEW_HPP_ */

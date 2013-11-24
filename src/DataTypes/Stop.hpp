@@ -27,7 +27,7 @@ class Stop
 		//TODO: Add route info here
 
 	public:
-		const QVariantMap ToVariantMap();
+		QVariantMap ToVariantMap() const;
 };
 
 typedef QList<Stop> StopList;

@@ -17,25 +17,25 @@ StopItemView::StopItemView(JsonManager * json, NavigationPane * navPane) {
 	navPane->push(view);
 
 	//Connect StopSearchReply to setDepartureTimes
-	QObject::connect(json, SIGNAL(ArrivalsAndDeparturesReply(QList<QVariantMap>, Stop)), this, SLOT(setDepartureTimes(QList<QVariantMap>, Stop)));
+	QObject::connect(json, SIGNAL(ArrivalsAndDeparturesReply(QList<ArrivalAndDeparture>, Stop)), this, SLOT(setDepartureTimes(QList<ArrivalAndDeparture>, Stop)));
 }
 
 StopItemView::~StopItemView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopItemView::setDepartureTimes(QList<QVariantMap> inputList, Stop stop)
+void StopItemView::setDepartureTimes(QList<ArrivalAndDeparture> departureList, Stop stop)
 {
-	qDebug() << "SLOT";
-	departureList = inputList;
+	this->departureList = departureList;
 	this->stop = stop;
 	ListView * departuresListView = view->findChild<ListView*>("departuresListView");
 	ArrayDataModel * departuresListModel = view->findChild<ArrayDataModel*>("departuresListModel");
 	departuresListModel->clear();
 
-	foreach(QVariantMap current, inputList)
+	foreach(ArrivalAndDeparture current, departureList)
 	{
-		qDebug() << "Adding " << current["routeShortName"].toString();
-		departuresListModel->append(current);
+		QVariantMap departure = current.ToVariantMap();
+		qDebug() << "Adding " << departure["routeShortName"].toString();
+		departuresListModel->append(departure);
 	}
 }
