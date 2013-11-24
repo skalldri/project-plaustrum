@@ -227,7 +227,7 @@ void JsonManager::processRouteSearchReply(QVariant input)
 
 void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 {
-	QList<ArrivalAndDeparture> outputList;
+	QList<QVariantMap> outputList;
 	Stop myStop;
 
 	if(input.toMap()["code"].toInt() != 200)
@@ -240,7 +240,7 @@ void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 
 	foreach(QVariant item, input.toMap()["data"].toMap()["arrivalsAndDepartures"].toList())
 	{
-		outputList.append(parseArrivalAndDeparture(item.toMap()));
+		outputList.append(/*parseArrivalAndDeparture*/(item.toMap()));
 	}
 
 	qDebug() << "Arrivals and Departures for Stop " << myStop.code;

@@ -19,6 +19,7 @@
 #include <bb/cascades/TextField>
 #include "../DataTypes.hpp"
 #include "../JsonManager.hpp"
+#include "StopItemView.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 
@@ -28,18 +29,19 @@ class StopsView : public QObject
 {
 	Q_OBJECT
 public:
-	StopsView(JsonManager * json, Page * view, NavigationPane * navPane);
+	StopsView(JsonManager * json, NavigationPane * navPane);
 	virtual ~StopsView();
 	void PopulateFavorites();
+	Q_INVOKABLE void showStop(qint32 index);
 
-public slots:
-	void getStops();
+	public slots:
 	void PopulateResults(QList<QVariantMap> inputList);
 
-private:
+	private:
 	JsonManager * json;
 	Page * view;
 	NavigationPane * navPane;
+	QList<QVariantMap> stopList;
 };
 
 #endif /* STOPSVIEW_HPP_ */
