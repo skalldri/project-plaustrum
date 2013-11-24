@@ -7,7 +7,7 @@
 
 #include "TransitAgency.hpp"
 
-QVariantMap TransitAgency::ToVariantMap()
+const QVariantMap TransitAgency::ToVariantMap()
 {
 	QVariantMap reply;
 

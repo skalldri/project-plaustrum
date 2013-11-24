@@ -9,6 +9,7 @@
 #define TRANSITAGENCY_HPP_
 
 #include <QVariantMap>
+#include <QList>
 
 class TransitAgency
 {
@@ -27,8 +28,9 @@ class TransitAgency
 		double lonSpan;
 
 	public:
-		QVariantMap ToVariantMap();
+		const QVariantMap ToVariantMap();
 };
 
+typedef QList<TransitAgency> TransitAgencyList;
 
 #endif /* TRANSITAGENCY_HPP_ */

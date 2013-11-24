@@ -7,7 +7,7 @@
 
 #include "Route.hpp"
 
-QVariantMap Route::ToVariantMap()
+const QVariantMap Route::ToVariantMap()
 {
 	QVariantMap reply;
 

@@ -9,6 +9,7 @@
 #define ARRIVALANDDEPARTURE_HPP_
 
 #include <QVariantMap>
+#include <QList>
 
 class ArrivalAndDeparture
 {
@@ -21,7 +22,9 @@ class ArrivalAndDeparture
 		unsigned int predictedDepartureTime;
 
 	public:
-		QVariantMap ToVariantMap();
+		const QVariantMap ToVariantMap();
 };
+
+typedef QList<ArrivalAndDeparture> ArrivalAndDepartureList;
 
 #endif /* ARRIVALANDDEPARTURE_HPP_ */
