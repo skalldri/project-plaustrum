@@ -21,14 +21,14 @@ StopsView::StopsView(JsonManager * json, NavigationPane * navPane)
 	navPane->push(view);
 
 	//Connect StopSearchReply to PopulateResults
-	connect(json, SIGNAL(StopSearchReply(QList<Stop>)), this, SLOT(PopulateResults(QList<Stop>)));
+	connect(json, SIGNAL(StopSearchReply(StopList)), this, SLOT(PopulateResults(StopList)));
 }
 
 StopsView::~StopsView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopsView::PopulateResults(QList<Stop> stopList)
+void StopsView::PopulateResults(StopList stopList)
 {
 	this->stopList = stopList;
 	ListView * stopsListView = view->findChild<ListView*>("stopsListView");

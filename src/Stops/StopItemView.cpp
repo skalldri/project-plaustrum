@@ -17,14 +17,14 @@ StopItemView::StopItemView(JsonManager * json, NavigationPane * navPane) {
 	navPane->push(view);
 
 	//Connect StopSearchReply to setDepartureTimes
-	QObject::connect(json, SIGNAL(ArrivalsAndDeparturesReply(QList<ArrivalAndDeparture>, Stop)), this, SLOT(setDepartureTimes(QList<ArrivalAndDeparture>, Stop)));
+	QObject::connect(json, SIGNAL(ArrivalsAndDeparturesReply(ArrivalAndDepartureList, Stop)), this, SLOT(setDepartureTimes(ArrivalAndDepartureList, Stop)));
 }
 
 StopItemView::~StopItemView() {
 	// TODO Auto-generated destructor stub
 }
 
-void StopItemView::setDepartureTimes(QList<ArrivalAndDeparture> departureList, Stop stop)
+void StopItemView::setDepartureTimes(ArrivalAndDepartureList departureList, Stop stop)
 {
 	this->departureList = departureList;
 	this->stop = stop;

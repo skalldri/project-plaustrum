@@ -35,13 +35,13 @@ public:
 	Q_INVOKABLE void showStop(qint32 index);
 
 	public slots:
-	void PopulateResults(QList<Stop> stopList);
+	void PopulateResults(StopList stopList);
 
 	private:
 	JsonManager * json;
 	Page * view;
 	NavigationPane * navPane;
-	QList<Stop> stopList;
+	StopList stopList;
 };
 
 #endif /* STOPSVIEW_HPP_ */
