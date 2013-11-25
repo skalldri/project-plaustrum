@@ -35,7 +35,23 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
             // Create a data provider just for the device
             // location object. When the clear function is
             // called, this object is not removed.
-        	bb::cascades::maps::DataProvider* deviceLocDataProv = new bb::cascades::maps::DataProvider("device-location-data-provider");
+        	MapDataProvider* deviceLocDataProv = new MapDataProvider("device-location-data-provider", mapView, json);
+
+        	bb::cascades::Button* updateDataButton = root->findChild<bb::cascades::Button*>(QString("updateDataButton"));
+        	if (updateDataButton)
+        	{
+        		QObject::connect(mapView, SIGNAL(touch(bb::cascades::TouchEvent*)), deviceLocDataProv, SLOT(mapTouched(bb::cascades::TouchEvent*)));
+				QObject::connect(updateDataButton, SIGNAL(clicked()), deviceLocDataProv, SLOT(viewUpdated()));
+        	}
+
+        	/*
+        	This signals trigger way too often: need to detect a finger-down event and a finger-up
+
+        	QObject::connect(mapView, SIGNAL(altitudeChanged(double)), deviceLocDataProv, SLOT(viewUpdated()));
+        	QObject::connect(mapView, SIGNAL(latitudeChanged(double)), deviceLocDataProv, SLOT(viewUpdated()));
+        	QObject::connect(mapView, SIGNAL(longitudeChanged(double)), deviceLocDataProv, SLOT(viewUpdated()));
+			*/
+
             mapView->mapData()->addProvider(deviceLocDataProv);
 
             // Create a geolocation just for the device's location.
@@ -62,7 +78,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 //TODO: Remove test function getStops()
 void ApplicationUI::getStops()
 {
-	qDebug() << "Get all Stops";
+	/*qDebug() << "Get all Stops";
 	json->GetAllStops("3");
 
 	qDebug() << "Get Stop by Code 501";
@@ -76,7 +92,7 @@ void ApplicationUI::getStops()
 	json->GetAllAgencies();
 
 	qDebug() << "Get Stops for Route 1_44";
-	json->GetStopsForRoute("1_44");
+	json->GetStopsForRoute("1_44");*/
 
 	/*
 	 * Doesn't work for now: needs a real lat and lon
@@ -130,8 +146,7 @@ void ApplicationUI::showTestPage()
 
 void ApplicationUI::updateDeviceLocation(double lat, double lon) {
     if (mapView) {
-        qDebug() << "ApplicationUI::updateDeviceLocation("
-            " " << lat << ", " << lon << " )";
+
         if (deviceLocation) {
             deviceLocation->setLatitude(lat);
             deviceLocation->setLongitude(lon);

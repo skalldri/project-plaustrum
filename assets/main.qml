@@ -6,7 +6,7 @@ import QtMobilitySubset.location 1.1
 
 TabbedPane {
     showTabsOnActionBar: false
-    
+    peekEnabled: false
     onCreationCompleted: {
         // this slot is called when declarative scene is created
         // write post creation initialization here
@@ -98,13 +98,48 @@ TabbedPane {
         id: mapTab
         Page {
             Container {
-                // The map view
+                layout: DockLayout {
+                }
+                
                 MapView {
+                    id: mapView
                     objectName: "mapView"
                     horizontalAlignment: HorizontalAlignment.Fill
                     followedId: "device-location-id"
                     // Enforce the usage of the 3D rendering engine
                     //onCreationCompleted: setRenderEngine("RenderEngine3D")
+                }
+            
+	            Container {
+	                leftPadding: 20
+	                rightPadding: 20
+	                bottomPadding: 20
+	                topPadding: 20
+	                horizontalAlignment: HorizontalAlignment.Left
+	                verticalAlignment: VerticalAlignment.Bottom
+	                overlapTouchPolicy: OverlapTouchPolicy.Allow
+	                
+                    Button {
+                    	id: updateDataButton
+                        objectName: "updateDataButton"
+                        text: "Update"
+                    }
+	                
+	                ToggleButton {
+	                    id: sensorToggle
+	                    horizontalAlignment: HorizontalAlignment.Center
+	                    checked: true
+	                    onCheckedChanged: {
+	                        if (checked) {
+	                            mapView.setFollowedId("device-location-id");
+	                        } else {
+	                            mapView.setFollowedId("");
+	                        }
+	                    }
+	                    onCreationCompleted: {
+                            mapview.setFollowedId("device-location-id");
+	                    }
+	                }
                 }
             }
         }
@@ -112,7 +147,7 @@ TabbedPane {
             PositionSource {
                 id: positionSource
                 updateInterval: 2000
-                active: true
+                active: sensorToggle.checked
                 onPositionChanged: {
                     ApplicationUI.updateDeviceLocation(
                     positionSource.position.coordinate.latitude, 
