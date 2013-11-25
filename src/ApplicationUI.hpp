@@ -17,7 +17,7 @@
 #include "AppSettings.hpp"
 #include "JsonManager.hpp"
 #include "DataTypes.hpp"
-#include "src/Map/MapView.hpp"
+#include "src/Map/MapDataProvider.hpp"
 
 namespace bb { namespace cascades { class Application; }}
 

@@ -91,12 +91,11 @@ signals:
 	void variantReplyMap(QVariant);
 	void testReplyMap(QVariant);
 	void ApiFailure(int); //Returns the error code from the API
-	void AllAgenciesReply(QList<TransitAgency>); //Returns a list of transit agencies
-	//TODO: Make QList<Stop> function
-	void StopSearchReply(QList<Stop>); //Returns a list of stops
-	void StopsForRouteReply(QList<Stop>, QString); //Returns a list of stops and the Route ID it was called for
-	void RouteSearchReply(QList<Route>); //Returns a list of routes
-	void ArrivalsAndDeparturesReply(QList<ArrivalAndDeparture>, Stop); //Returns a list of ArrivalAndDeparture objects for a stop, along with a reference to the stop
+	void AllAgenciesReply(TransitAgencyList); //Returns a list of transit agencies
+	void StopSearchReply(StopList); //Returns a list of stops
+	void StopsForRouteReply(StopList, QString); //Returns a list of stops and the Route ID it was called for
+	void RouteSearchReply(RouteList); //Returns a list of routes
+	void ArrivalsAndDeparturesReply(ArrivalAndDepartureList, Stop); //Returns a list of ArrivalAndDeparture objects for a stop, along with a reference to the stop
 
 };
 
