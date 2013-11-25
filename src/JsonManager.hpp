@@ -16,6 +16,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <bb/data/JsonDataAccess>
+#include <QtLocationSubset/QGeoCoordinate>
 #include <QVariant>
 #include <QtCore>
 #include <QUrl>
@@ -60,6 +61,15 @@ private:
 	Stop parseStop(QVariantMap stopMap);
 	Route parseRoute(QVariantMap routeEntry);
 	ArrivalAndDeparture parseArrivalAndDeparture(QVariantMap arrivalAndDepartureMap);
+	Frequency parseFrequency(QVariantMap frequency);
+	TripStatus parseTripStatus(QVariantMap tripStatus);
+	QtMobilitySubset::QGeoCoordinate parsePosition(QVariantMap position);
+	Situation parseSituation(QVariantMap situation);
+	ConsequenceList parseConsequenceList(QVariantList consequenceList);
+	Affects parseAffects(QVariantMap affect);
+	Consequence parseConsequence(QVariantMap consequence);
+	VehicleJourney parseVehicleJourney(QVariantMap vehicleJourney);
+	QString parseValue(QVariantMap value);
 
 	void processAllAgenciesReply(QVariant input);
 	void processAllStopsReply(QVariant input);

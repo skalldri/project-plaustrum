@@ -225,7 +225,7 @@ void JsonManager::processRouteSearchReply(QVariant input)
 
 void JsonManager::processArrivalsAndDeparturesReply(QVariant input)
 {
-	QList<ArrivalAndDeparture> outputList;
+	ArrivalAndDepartureList outputList;
 	Stop myStop;
 
 	if(input.toMap()["code"].toInt() != 200)
@@ -250,15 +250,147 @@ ArrivalAndDeparture JsonManager::parseArrivalAndDeparture(QVariantMap arrivalAnd
 {
 	ArrivalAndDeparture localAad;
 	localAad.routeId = arrivalAndDepartureMap["routeId"].toString();
+	localAad.tripId = arrivalAndDepartureMap["tripId"].toString();
+	localAad.serviceDate = arrivalAndDepartureMap["serviceDate"].toUInt();
+	localAad.stopId = arrivalAndDepartureMap["stopId"].toString();
+	localAad.stopSequence = arrivalAndDepartureMap["stopSequence"].toUInt();
+	localAad.blockTripSequence = arrivalAndDepartureMap["blockTripSequence"].toUInt();
 	localAad.routeShortName = arrivalAndDepartureMap["routeShortName"].toString();
-	localAad.predictedArrivalTime = arrivalAndDepartureMap["predictedArrivalTime"].toUInt();
+	localAad.routeLongName = arrivalAndDepartureMap["routeLongName"].toString();
+	localAad.tripHeadsign = arrivalAndDepartureMap["tripHeadsign"].toString();
+	localAad.arrivalEnabled = arrivalAndDepartureMap["arrivalEnabled"].toBool();
+	localAad.departureEnabled = arrivalAndDepartureMap["departureEnabled"].toBool();
 	localAad.scheduledArrivalTime = arrivalAndDepartureMap["scheduledArrivalTime"].toUInt();
-	localAad.predictedDepartureTime = arrivalAndDepartureMap["predictedDepartureTime"].toUInt();
 	localAad.scheduledDepartureTime = arrivalAndDepartureMap["scheduledDepartureTime"].toUInt();
+	localAad.frequency = parseFrequency(arrivalAndDepartureMap["frequency"].toMap());
+	localAad.predicted = arrivalAndDepartureMap["predicted"].toBool();
+	localAad.predictedArrivalTime = arrivalAndDepartureMap["predictedArrivalTime"].toUInt();
+	localAad.predictedDepartureTime = arrivalAndDepartureMap["predictedDepartureTime"].toUInt();
+	localAad.distanceFromStop = arrivalAndDepartureMap["distanceFromStop"].toUInt();
+	localAad.numberOfStopsAway = arrivalAndDepartureMap["numberOfStopsAway"].toUInt();
+	localAad.tripStatus = parseTripStatus(arrivalAndDepartureMap["tripStatus"].toMap());
 
 	qDebug() << "Arrival for route " << localAad.routeShortName;
 
 	return localAad;
+}
+
+Frequency JsonManager::parseFrequency(QVariantMap frequency)
+{
+	Frequency localFreq;
+
+
+
+	return localFreq;
+}
+
+TripStatus JsonManager::parseTripStatus(QVariantMap tripStatus)
+{
+	TripStatus localTS;
+
+	localTS.activeTripId = tripStatus["activeTripId"].toString();
+	localTS.blockTripSequence = tripStatus["blockTripSequence"].toUInt();
+	localTS.serviceDate = tripStatus["serviceDate"].toUInt();
+
+	localTS.frequency = parseFrequency(tripStatus["frequency"].toMap());
+	localTS.scheduledDistanceAlongTrip = tripStatus["scheduledDistanceAlongTrip"].toUInt();
+	localTS.totalDistanceAlongTrip = tripStatus["totalDistanceAlongTrip"].toUInt();
+	double lat = tripStatus["position"].toMap()["lat"].toDouble();
+	double lon = tripStatus["position"].toMap()["lon"].toDouble();
+	localTS.position = QtMobilitySubset::QGeoCoordinate(lat, lon);
+	localTS.orientation = tripStatus["orientation"].toUInt();
+	localTS.closestStop = tripStatus["closestStop"].toString();
+	localTS.closestStopTimeOffset = tripStatus["closestStopTimeOffset"].toUInt();
+	localTS.nextStop = tripStatus["nextStop"].toString();
+	localTS.nextStopTimeOffset = tripStatus["nextStopTimeOffset"].toUInt();
+	localTS.phase = tripStatus["phase"].toString();
+	localTS.status = tripStatus["status"].toString();
+	localTS.predicted = tripStatus["predicted"].toBool();
+	localTS.lastUpdateTime = tripStatus["lastUpdateTime"].toUInt();
+	localTS.lastLocationUpdateTime = tripStatus["lastLocationUpdateTime"].toUInt();
+	lat = tripStatus["lastKnownLocation"].toMap()["lat"].toDouble();
+	lon = tripStatus["lastKnownLocation"].toMap()["lon"].toDouble();
+	localTS.lastKnownLocation = QtMobilitySubset::QGeoCoordinate(lat, lon);
+	localTS.lastKnownOrientation = tripStatus["lastKnownOrientation"].toUInt();
+	localTS.distanceAlongTrip = tripStatus["distanceAlongTrip"].toUInt();
+	localTS.scheduleDeviation = tripStatus["scheduleDeviation"].toUInt();
+	localTS.vehicleId = tripStatus["vehicleId"].toString();
+	localTS.situationIds = parseSituation(tripStatus["situationIds"].toMap());
+
+	return localTS;
+}
+
+Situation JsonManager::parseSituation(QVariantMap situation)
+{
+	Situation localSit;
+	localSit.id = situation["id"].toString();
+	localSit.creationTime = situation["creationTime"].toUInt();
+	localSit.environmentReason = situation["environmentReason"].toString();
+	localSit.summary = situation["summary"].toMap()["value"].toString();
+	localSit.description = situation["description"].toMap()["value"].toString();
+	localSit.affects = parseAffects(situation["affects"].toMap());
+	localSit.consequences = parseConsequenceList(situation["consequences"].toList());
+	return localSit;
+}
+
+ConsequenceList JsonManager::parseConsequenceList(QVariantList consequenceList)
+{
+	ConsequenceList localConList;
+
+	foreach(QVariant consequence, consequenceList)
+	{
+		localConList.append(parseConsequence(consequence.toMap()));
+	}
+
+	return localConList;
+}
+
+Affects JsonManager::parseAffects(QVariantMap affects)
+{
+	Affects localAffects;
+
+	StopList stopList;
+	foreach(QVariant stop, affects["stops"].toList())
+	{
+		stopList.append(parseStop(stop.toMap()));
+	}
+	localAffects.stops = stopList;
+
+	VehicleJourneyList vehicleJourneyList;
+	foreach(QVariant vehicleJourney, affects["vehicleJourneys"].toList())
+	{
+		vehicleJourneyList.append(parseVehicleJourney(vehicleJourney.toMap()));
+	}
+	localAffects.vehicleJourneys = vehicleJourneyList;
+
+	return localAffects;
+}
+
+Consequence JsonManager::parseConsequence(QVariantMap consequence)
+{
+	Consequence localCon;
+
+	localCon.condition = consequence["condition"].toString();
+	localCon.diversionPath = consequence["conditionDetails"].toMap()["diversionPath"].toMap()["points"].toString();
+	localCon.diversionStopIds = consequence["conditionDetails"].toMap()["diversionStopIds"].toMap()["string"].toStringList();
+
+	return localCon;
+}
+
+VehicleJourney JsonManager::parseVehicleJourney(QVariantMap vehicleJourney)
+{
+	VehicleJourney localVJ;
+
+	localVJ.lineId = vehicleJourney["lineId"].toString();
+	localVJ.direction = vehicleJourney["direction"].toUInt();
+	QStringList stopIds;
+	foreach(QVariant call, vehicleJourney["calls"].toList())
+	{
+		stopIds.append(call.toMap()["stopId"].toString());
+	}
+	localVJ.stopIds = stopIds;
+
+	return localVJ;
 }
 
 void JsonManager::processAllStopsReply(QVariant input)

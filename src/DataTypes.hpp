@@ -8,9 +8,15 @@
 #ifndef DATATYPES_HPP_
 #define DATATYPES_HPP_
 
-#include <DataTypes/ArrivalAndDeparture.hpp>
-#include <DataTypes/Route.hpp>
-#include <DataTypes/Stop.hpp>
-#include <DataTypes/TransitAgency.hpp>
+#include "DataTypes/Affects.hpp"
+#include "DataTypes/ArrivalAndDeparture.hpp"
+#include "DataTypes/Consequence.hpp"
+#include "DataTypes/Frequency.hpp"
+#include "DataTypes/Route.hpp"
+#include "DataTypes/Situation.hpp"
+#include "DataTypes/Stop.hpp"
+#include "DataTypes/TransitAgency.hpp"
+#include "DataTypes/TripStatus.hpp"
+#include "DataTypes/VehicleJourney.hpp"
 
 #endif /* DATATYPES_HPP_ */

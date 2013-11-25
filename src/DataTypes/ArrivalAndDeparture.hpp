@@ -10,17 +10,32 @@
 
 #include <QVariantMap>
 #include <QList>
+#include "Frequency.hpp"
+#include "TripStatus.hpp"
 
 class ArrivalAndDeparture
 {
 	public:
 		QString routeId;
-		QString routeShortName;
+		QString tripId;
+		unsigned int serviceDate;
+		QString stopId;
+		unsigned int stopSequence;
+		unsigned int blockTripSequence;
+		QString routeShortName; //OPTIONAL
+		QString routeLongName; //OPTIONAL
+		QString tripHeadsign; //OPTIONAL
+		bool arrivalEnabled;
+		bool departureEnabled;
 		unsigned int scheduledArrivalTime;
-		unsigned int predictedArrivalTime;
 		unsigned int scheduledDepartureTime;
+		Frequency frequency; //OPTIONAL
+		bool predicted;
+		unsigned int predictedArrivalTime;
 		unsigned int predictedDepartureTime;
-
+		unsigned int distanceFromStop;
+		unsigned int numberOfStopsAway;
+		TripStatus tripStatus; //OPTIONAL
 	public:
 		QVariantMap ToVariantMap() const;
 };
