@@ -15,7 +15,9 @@
 #include "DataTypes/Route.hpp"
 #include "DataTypes/Situation.hpp"
 #include "DataTypes/Stop.hpp"
+#include "DataTypes/StopTime.hpp"
 #include "DataTypes/TransitAgency.hpp"
+#include "DataTypes/TripDetails.hpp"
 #include "DataTypes/TripStatus.hpp"
 #include "DataTypes/VehicleJourney.hpp"
 

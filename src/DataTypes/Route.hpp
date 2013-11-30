@@ -10,14 +10,22 @@
 
 #include <QVariantMap>
 #include <QList>
+#include <QUrl>
+#include <QString>
 
 class Route
 {
 	public:
-		QString shortName;
 		QString id;
+		QString name; //Defaults to shortName.
+		QString shortName; //Either shortName or longName required.
+		QString longName;
 		QString description;
-		//TODO: consider adding a URL data type here
+		unsigned int type;
+		QUrl url;
+		QString color;
+		QString textColor;
+		QString agencyId;
 
 	public:
 		QVariantMap ToVariantMap() const;

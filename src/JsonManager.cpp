@@ -407,7 +407,7 @@ Stop JsonManager::parseStop(QVariantMap stopMap)
 	localStop.name = stopMap["name"].toString();
 	localStop.lat = stopMap["lat"].toDouble();
 	localStop.lon = stopMap["lon"].toDouble();
-	localStop.locationType = stopMap["locationType"].toString();
+	localStop.locationType = stopMap["locationType"].toUInt();
 	localStop.direction = stopMap["direction"].toString();
 	localStop.wheelchairBoarding = stopMap["wheelchairBoarding"].toString();
 
@@ -426,14 +426,15 @@ Route JsonManager::parseRoute(QVariantMap routeEntry)
 	Route localRoute;
 
 	localRoute.id = routeEntry["id"].toString();
-	localRoute.description = routeEntry["description"].toString();
-
-	if(localRoute.description == "" || localRoute.description.isEmpty())
-	{
-		localRoute.description = routeEntry["longName"].toString();
-	}
-
 	localRoute.shortName = routeEntry["shortName"].toString();
+	localRoute.longName = routeEntry["longName"].toString();
+	localRoute.name = localRoute.shortName.isEmpty() ? localRoute.shortName : localRoute.longName;
+	localRoute.description = routeEntry["description"].toString();
+	localRoute.type = routeEntry["type"].toUInt();
+	localRoute.url = routeEntry["url"].toUrl();
+	localRoute.color = routeEntry["color"].toString();
+	localRoute.textColor = routeEntry["textColor"].toString();
+	localRoute.agencyId = routeEntry["agencyId"].toString();
 
 	qDebug() << "\tRoute Found: " << localRoute.description;
 

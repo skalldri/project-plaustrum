@@ -21,9 +21,9 @@ class Stop
 		QString direction;
 		QString name;
 		QString code;
-		QString locationType;
+		unsigned int locationType;
 		QString wheelchairBoarding;
-		QList<Route> routeInfo;
+		RouteList routeInfo;
 		//TODO: Add route info here
 
 	public:
