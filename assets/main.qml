@@ -34,10 +34,12 @@ TabbedPane {
                             id: textStopCode
                             textStyle.textAlign: TextAlign.Default
                         }
-                        Button {
-                            text: "Image"
+                        ImageButton {
+                            defaultImageSource: "asset:///icons/ic_search.png"
+                            verticalAlignment: VerticalAlignment.Center
+                            horizontalAlignment: HorizontalAlignment.Center
                             onClicked: {
-                            	ApplicationUI.showStopsList(textStopCode.text);
+                                ApplicationUI.showStopsList(textStopCode.text);
                             }
                         }
                     }
@@ -47,10 +49,10 @@ TabbedPane {
                     ListView {
                         objectName: "favoriteStopsListView"
                         dataModel: ArrayDataModel {
-                        	objectName: "favoriteStopsListModel"
+                            objectName: "favoriteStopsListModel"
                         }
                     }
-                }       
+                }
             }
         }
     }

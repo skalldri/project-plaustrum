@@ -12,6 +12,7 @@
 #include <bb/cascades/Application>
 #include <bb/cascades/ArrayDataModel>
 #include <bb/cascades/Button>
+#include <bb/cascades/Label>
 #include <bb/cascades/ListView>
 #include <bb/cascades/NavigationPane>
 #include <bb/cascades/Page>

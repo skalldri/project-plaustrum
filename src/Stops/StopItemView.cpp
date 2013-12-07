@@ -28,8 +28,14 @@ void StopItemView::setDepartureTimes(QList<ArrivalAndDeparture> departureList, S
 {
 	this->departureList = departureList;
 	this->stop = stop;
-	ListView * departuresListView = view->findChild<ListView*>("departuresListView");
-	ArrayDataModel * departuresListModel = view->findChild<ArrayDataModel*>("departuresListModel");
+
+	Label* stopId = view->findChild<Label*>("stopId");
+	stopId->setText(stop.code);
+	Label* stopName = view->findChild<Label*>("stopName");
+	stopName->setText(stop.name);
+
+	ListView* departuresListView = view->findChild<ListView*>("departuresListView");
+	ArrayDataModel* departuresListModel = view->findChild<ArrayDataModel*>("departuresListModel");
 	departuresListModel->clear();
 
 	foreach(ArrivalAndDeparture current, departureList)

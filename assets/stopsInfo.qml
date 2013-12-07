@@ -2,6 +2,35 @@ import bb.cascades 1.0
 
 Page {
     Container {
+        Container {
+            layout: DockLayout { }
+            preferredWidth: maxWidth
+            Container {
+                horizontalAlignment: HorizontalAlignment.Left
+                layout:StackLayout {
+                    orientation: LayoutOrientation.LeftToRight;                
+                }
+                Label{
+                    objectName: "stopId"
+                    text: "000"
+                    verticalAlignment: VerticalAlignment.Center
+                    textStyle.fontWeight: FontWeight.Bold
+                    textStyle.textAlign: TextAlign.Center
+                }
+                Label{
+                    objectName: "stopName"
+                    text: "Name"
+                    verticalAlignment: VerticalAlignment.Center
+                }
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Right
+                ImageButton {
+                    objectName: "refresh"
+                    defaultImageSource: "asset:///icons/ic_reload.png"
+                }
+            }
+        }
         Header {
             title: "Departure Times"
         }
@@ -14,12 +43,14 @@ Page {
                 //StopsView.showStop(indexPath);
             }
             listItemComponents: [
-                ListItemComponent {  
-                    Container{
-                        layout: DockLayout {}
-                        touchPropagationMode: TouchPropagationMode.Full;
-                        Container{
-                            layout: DockLayout {}
+                ListItemComponent {
+                    Container {
+                        layout: DockLayout {
+                        }
+                        touchPropagationMode: TouchPropagationMode.Full
+                        Container {
+                            layout: DockLayout {
+                            }
                             preferredWidth: 768; preferredHeight: 120    
                             Divider {
                                 verticalAlignment: VerticalAlignment.Bottom
@@ -31,19 +62,15 @@ Page {
                                     orientation: LayoutOrientation.LeftToRight;                
                                 }
                                 Label{
-                                    text: ListItemData.routeId;
+                                    text: ListItemData.routeShortName;
                                     verticalAlignment: VerticalAlignment.Center
                                     textStyle.fontWeight: FontWeight.Bold
                                     textStyle.textAlign: TextAlign.Center
-                                    textStyle.fontSize: FontSize.XXLarge
                                 }
-                                Container {
-                                    bottomPadding: 10
-                                    verticalAlignment: VerticalAlignment.Center
-                                    Label{
-                                        text: ListItemData.routeShortName
-                                    }
+                                Label{
+                                    text: ListItemData.routeLongName
                                 }
+                            
                             }
                         } 
                     }

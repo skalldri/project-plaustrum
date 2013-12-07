@@ -8,7 +8,10 @@ PRECOMPILED_HEADER =  $$quote($$BASEDIR/precompiled.h)
 lupdate_inclusion {
     SOURCES +=  $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
-             $$quote($$BASEDIR/../assets/*.qs)
+             $$quote($$BASEDIR/../assets/*.qs) \
+             $$quote($$BASEDIR/../assets/icons/*.qml) \
+             $$quote($$BASEDIR/../assets/icons/*.js) \
+             $$quote($$BASEDIR/../assets/icons/*.qs)
 
 }
 

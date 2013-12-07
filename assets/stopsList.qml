@@ -35,15 +35,11 @@ Page {
                                     verticalAlignment: VerticalAlignment.Center
                                     textStyle.fontWeight: FontWeight.Bold
                                     textStyle.textAlign: TextAlign.Center
-                                    textStyle.fontSize: FontSize.XXLarge
                                 }
-                                Container {
-                                    bottomPadding: 10
-                                    verticalAlignment: VerticalAlignment.Center
-                                    Label{
-                                        text: ListItemData.name
-                                    }
+                                Label{
+                                    text: ListItemData.name
                                 }
+                            
                             }
                         } 
                     }
